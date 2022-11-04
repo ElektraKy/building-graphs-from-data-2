@@ -1,0 +1,23 @@
+{
+    "nodesSource": [
+        { "id": "bde1", "group": "bds1.1", "label": "IRC", "tag": "bde" },
+        { "id": "bde2", "group": "bds1.1", "label": "Market Risk RWAs", "tag": "bde" },
+        { "id": "bde3", "group": "bds1.2", "label": "FX De-Peg Risk Measure", "tag": "bde" },
+        { "id": "rde1", "group": "reportGroup1", "label": "RDE1", "tag": "rde" },
+        { "id": "rde2", "group": "reportGroup1", "label": "RDE2", "tag": "rde" },
+        { "id": "rde3", "group": "reportGroup1", "label": "RDE3", "tag": "rde" },
+        { "id": "rde4", "group": "reportGroup1", "label": "RDE4", "tag": "rde" }
+    ],
+    "edgesSource": [
+        { "from": "http://www.hsbc.com/row/56774c66895148bc0d7eff26e9d8764ede3a59ebbfa8fff173a57bb3b63e6201", "to": "http://www.hsbc.com/row/rde1" },
+        { "from": "http://www.hsbc.com/row/6f34f27fe31d885c7c96587a755053b398dafc7246c1697696c0e2a914a48b94", "to": "http://www.hsbc.com/row/rde2" },
+        { "from": "http://www.hsbc.com/row/89dbb54002c785b31a8dc4718818dcb93c87d72880e1fde52b4ff94d9b4dc275", "to": "http://www.hsbc.com/row/rde3" }
+    ],
+    "groupsSource": [
+        { "id": "processGroup1", "label": "Produce & Distribute HNAH Risk Management Meeting (RMM) Report", "tag": "processGroup" },
+        { "id": "appInstance1", "group": "processGroup1", "label": "Traded Risk Template", "tag": "appInstance" },
+        { "id": "reportGroup1", "group": "processGroup1", "label": "HNAH Risk Management Meeting (RMM)", "tag": "reportGroup" },
+        { "id": "bds1.1", "group": "appInstance1", "label": "US Market Risk RWA Exposures 5996804", "tag": "bds" },
+        { "id": "bds1.2", "group": "appInstance1", "label": "US TRC_Global FX Report Builder EUC 8704743", "tag": "bds" }
+    ]
+}

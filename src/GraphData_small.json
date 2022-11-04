@@ -1,0 +1,43 @@
+{
+    "nodesSource": [
+        { "id": "bde1", "group": "bds1.1", "label": "IRC sajh das d dsa d sad  ads dsa dsad  da ds s a  as ds sad s a d asd a ds a d adsas dd sa dasda a ds da ads", "tag": "bde" },
+        { "id": "bde2", "group": "bds1.1", "label": "Market Risk RWAs", "tag": "bde" },
+        { "id": "bde3", "group": "bds1.2", "label": "FX De-Peg Risk Measure", "tag": "bde" },
+        { "id": "bde4", "group": "bds2.1", "label": "IRC", "tag": "bde" },
+        { "id": "bde5", "group": "bds2.1", "label": "Market Risk RWAs", "tag": "bde" },
+        { "id": "bde6", "group": "bds2.2", "label": "FX De-Peg Risk Measure", "tag": "bde" },
+        { "id": "bde7", "group": "bds3.1", "label": "Global def", "tag": "bde" },
+        { "id": "bde8", "group": "bds3.2", "label": "Global terms", "tag": "bde" },
+        { "id": "bde9", "group": "bds3.2", "label": "Global history", "tag": "bde" },
+        { "id": "rde1", "group": "rep1", "label": "RDE1", "tag": "rde" },
+        { "id": "rde2", "group": "rep1", "label": "RDE2", "tag": "rde" },
+        { "id": "rde3", "group": "rep1", "label": "RDE3", "tag": "rde" }
+    ],
+    "edgesSource": [
+        { "from": "bde1", "to": "bde5" },
+        { "from": "bde2", "to": "bde4" },
+        { "from": "bde3", "to": "bde6" },
+        { "from": "bde4", "to": "bde7" },
+        { "from": "bde4", "to": "bde9" },
+        { "from": "bde5", "to": "bde7" },
+        { "from": "bde6", "to": "bde8" },
+        { "from": "bde7", "to": "rde1" },
+        { "from": "bde8", "to": "rde2" },
+        { "from": "bde8", "to": "rde3" },
+        { "from": "bde9", "to": "rde1" }
+    ],
+    "groupsSource": [
+        { "id": "processGroup1", "label": "1234567 890 1 2345 6 789bl abal abad lalf laba lab lda si h ljdl sajdjaljd lkjas ldk jslak jdlk jasld jlsaj dlja sld jl ablab lablablal albla bla b_ ____E ND", "tag": "processGroup" },
+        { "id": "processGroup2", "label": "Review HNAH Risk Management Meeting (RMM) Report", "tag": "processGroup" },
+        { "id": "appInst1", "group": "processGroup1", "label": "App 1asdkjdklasjdjasd;js;akdksadjdhasjd;ajs;djsa;jd;jas;dj;ajlsdj ______END", "tag": "appInstance" },
+        { "id": "appInst2", "group": "processGroup1", "label": "App 2", "tag": "appInstance" },
+        { "id": "appInst3", "group": "processGroup2", "label": "App 3", "tag": "appInstance" },
+        { "id": "rep1", "group": "processGroup2", "label": "HNAH Risk Management Meeting (RMM)", "tag": "reportGroup" },
+        { "id": "bds1.1", "group": "appInst1", "label": "US Market Risk RWA Exposures 5996804", "tag": "bds" },
+        { "id": "bds1.2", "group": "appInst1", "label": "US TRC_Global FX Report Builder EUC 8704743", "tag": "bds" },
+        { "id": "bds2.1", "group": "appInst2", "label": "UK Market Risk", "tag": "bds" },
+        { "id": "bds2.2", "group": "appInst2", "label": "UK TRC_Global FX", "tag": "bds" },
+        { "id": "bds3.1", "group": "appInst3", "label": "Global TRC_Global FX", "tag": "bds" },
+        { "id": "bds3.2", "group": "appInst3", "label": "Global TRC_Global FX", "tag": "bds" }
+    ]
+}

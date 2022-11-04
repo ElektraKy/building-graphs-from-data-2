@@ -1,0 +1,44 @@
+{
+    "@graph": [{
+        "@id": "casewise:businessProcess/06bf51972eb111ed84940022483fd6a5",
+        "label": "Produce & Distribute HNAH Risk Management Meeting (RMM) Report",
+        "tag": "casewise:BusinessProcess"
+    }, {
+        "@id": "eim:App_Inst/10269148",
+        "group": "casewise:businessProcess/06bf51972eb111ed84940022483fd6a5",
+        "label": "Traded Risk Template",
+        "tag": "eim:App_Instance"
+    }, {
+        "@id": "http://www.hsbc.com/row/7ad14091d56940cf38e01c3ab6f4f05b8add7cfa86c23fd4eda67735d0b832c3",
+        "group": "eim:App_Inst/10269148",
+        "label": "US Market Risk RWA Exposures 5996804",
+        "tag": "collibra:BusinessDataSet"
+    }, {
+        "@id": "http://www.hsbc.com/row/95a38b85133ec4ee027d914ce6df5c33d983c57324097020870f31c658ce4db8",
+        "group": "eim:App_Inst/10269148",
+        "label": "US TRC_Global FX Report Builder EUC 8704743",
+        "tag": "collibra:BusinessDataSet"
+    }, {
+        "@id": "http://www.hsbc.com/row/9b9f1c5fb9d809cfd494594aaf78660cae5831747cb36312c3c3a2c4a7a2e61a",
+        "group": "casewise:businessProcess/06bf51972eb111ed84940022483fd6a5",
+        "label": "HNAH Risk Management Meeting (RMM)",
+        "tag": "collibra:Report"
+    }],
+    "@context": {
+        "tag": {
+            "@id": "http://www.hsbc.com/vis/tag",
+            "@type": "@id"
+        },
+        "group": {
+            "@id": "http://www.hsbc.com/vis/group",
+            "@type": "@id"
+        },
+        "label": {
+            "@id": "http://www.hsbc.com/vis/label"
+        },
+        "casewise": "http://www.hsbc.com/casewise/",
+        "vis": "http://www.hsbc.com/vis/",
+        "collibra": "http://www.hsbc.com/collibra/",
+        "eim": "http://www.hsbc.com/eim/"
+    }
+}
