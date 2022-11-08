@@ -343,7 +343,6 @@ function buildGraph_fromSparql(graph: IGraph, nodesData: any, groupsData: any, e
       // Set style, based on the node type
       if (groupData.type.indexOf('casewise:BusinessProcess') !== -1) {
         graph.setStyle(group, grey_group)
-        //graph.groupNodeDefaults.labels.style = white_label //this changes them all
       }
       else if (groupData.type.indexOf('collibra:Report') !== -1) {
         graph.setStyle(group, red_group)
