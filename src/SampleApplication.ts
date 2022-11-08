@@ -95,9 +95,12 @@ async function run(): Promise<void> {
 
     // *****OPTION 1: FOR SPARQL OUTPUTS ******
     // for SPARQL outputs only: load the graph data from the given JSON files - 
-    const nodesData1 = await loadJSON('./nodesource.json')
-    const groupsData1 = await loadJSON('./groupsource.json')
-    const edgesData = await loadJSON('./edgesource.json')
+    //const nodesData1 = await loadJSON('./nodesource.json')
+    //const groupsData1 = await loadJSON('./groupsource.json')
+    //const edgesData = await loadJSON('./edgesource.json')
+    const nodesData1 = await loadJSON('./nodes3_new.json')
+    const groupsData1 = await loadJSON('./groups3.json')
+    const edgesData = await loadJSON('./edges3.json')
     // replace all @id with id and first @graph instance with graph
     const nodes_str = JSON.stringify(nodesData1).replace(/@id/g, 'id').replace('@graph','graph')
     const nodesData = JSON.parse(nodes_str);
@@ -122,6 +125,8 @@ async function run(): Promise<void> {
     customLayout.gridSpacing = 25 //this affects the distance between groups - subgroups
     customLayout.minimumLayerDistance = 130
     customLayout.considerNodeLabels = true
+    customLayout.automaticEdgeGrouping = true
+    //customLayout.orthogonalRouting = true
   
     graphComponent.morphLayout(customLayout, '1s');
 
@@ -499,6 +504,7 @@ async function loadJSON(url: string): Promise<JSON> {
   const response = await fetch(url)
   return response.json()
 }
+
 
 // noinspection JSIgnoredPromiseFromCall
 run()

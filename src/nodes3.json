@@ -1,0 +1,342 @@
+{
+  "@graph" : [ {
+    "@id" : "http://www.hsbc.com/row/0492b7f965b1732612c10deb110fb24205d65e45bd87a0a3bb1cd0c54b65b290",
+    "dataElementDescription" : "Defines if the trade or reporting has to be done in local currency ",
+    "group" : "http://www.hsbc.com/row/c3153e8cfbe9953100ede3f0a6b147b7484b90075fc4c3f4b4486d82562870cd",
+    "label" : "Local Currency Position flag",
+    "type" : "collibra:BusinessDataElement"
+  }, {
+    "@id" : "http://www.hsbc.com/row/127ea7011bd3dda16f124482c63ded6b11c79b7fa8f64ceaa0f975f0d5e80d8a",
+    "dataElementDescription" : "A date on which the principal amount of a note, draft, acceptance bond or other debt instrument becomes due and is repaid to the investor and interest payments stop.",
+    "group" : "http://www.hsbc.com/row/c3153e8cfbe9953100ede3f0a6b147b7484b90075fc4c3f4b4486d82562870cd",
+    "label" : "Maturity Date",
+    "type" : "collibra:BusinessDataElement"
+  }, {
+    "@id" : "http://www.hsbc.com/row/150391eafe94b8f41e25b911162c134cfd4607d9b733b12c37db12eabdcc7b2b",
+    "dataElementDescription" : "Exchange rate is the price of one currency in terms of another currency. Exchange rates can be either fixed or floating. Fixed exchange rates are decided by central banks of a country whereas floating exchange rates are decided by the mechanism of market demand and supply.",
+    "group" : "http://www.hsbc.com/row/33f6199401c27bfd345515225464f3b2c9e1ee296b4228718485c29f2372816d",
+    "label" : "Currency Group",
+    "type" : "collibra:BusinessDataElement"
+  }, {
+    "@id" : "http://www.hsbc.com/row/1b64e1e8b0a17bc7526b405f61cdc8cbe14d9b2d42c8d3d27af722c26cfb1ae0",
+    "dataElementDescription" : "Debt seniority refers to the order of repayment in the event of a sale or bankruptcy of the issuer. ",
+    "group" : "http://www.hsbc.com/row/c3153e8cfbe9953100ede3f0a6b147b7484b90075fc4c3f4b4486d82562870cd",
+    "label" : "Debt Seniority",
+    "type" : "collibra:BusinessDataElement"
+  }, {
+    "@id" : "http://www.hsbc.com/row/2da1e61c8830fc3e2a31fc5c23a5db8ba4b3070ed53439cc140245956534e64e",
+    "dataElementDescription" : "A classification of a product based upon their characteristics and the market needs they address.",
+    "group" : "http://www.hsbc.com/row/c3153e8cfbe9953100ede3f0a6b147b7484b90075fc4c3f4b4486d82562870cd",
+    "label" : "Product Type",
+    "type" : "collibra:BusinessDataElement"
+  }, {
+    "@id" : "http://www.hsbc.com/row/2e0a5457e49d9f27a6d7a4b76fae241a64a8854f8bf234f5845537401a4244e8",
+    "dataElementDescription" : [ "Positive or negative shocks applied on the calculated PnL vectors or values, i.e. derived from a defined shift (e.g. +10%) to the corresponding USD-pair (e.g. USDAED) FX Spot rate", "Positive or negative shocks applied on the calculated PnL vectors or values, i.e derived from a defined shift (e.g +10%) to the corresponding USD-pair (e.g USDAED) FX Spot rate" ],
+    "group" : "http://www.hsbc.com/row/33f6199401c27bfd345515225464f3b2c9e1ee296b4228718485c29f2372816d",
+    "label" : "PnL Ladders",
+    "type" : "collibra:BusinessDataElement"
+  }, {
+    "@id" : "http://www.hsbc.com/row/38c627d617ffbf199b540dd9454173dc7de2661e84218bb8d80ed5d4d9e3dd63",
+    "dataElementDescription" : "An instance identifier for a reference scheme group.",
+    "group" : "http://www.hsbc.com/row/c3153e8cfbe9953100ede3f0a6b147b7484b90075fc4c3f4b4486d82562870cd",
+    "label" : "site code",
+    "type" : "collibra:BusinessDataElement"
+  }, {
+    "@id" : "http://www.hsbc.com/row/3c8a786dbeaa2ef579c8f74ac3848396e4122077b793a70299a1bda80df8bb12",
+    "dataElementDescription" : "A traded risk amount that represents the impact on the present value of a position of a one basis point (1bp) rise in the credit spread.",
+    "group" : "http://www.hsbc.com/row/c3153e8cfbe9953100ede3f0a6b147b7484b90075fc4c3f4b4486d82562870cd",
+    "label" : "Credit Spread Basis Point Amount",
+    "type" : "collibra:BusinessDataElement"
+  }, {
+    "@id" : "http://www.hsbc.com/row/4665c09ca172c8ca2d9a60e25b61786d93ddb4013de772393838f7d8f4782531",
+    "dataElementDescription" : "Flag to check whether it is a limit monitoring position or not. (Inscope for Issuer default & credit spread Risk  Management framework)",
+    "group" : "http://www.hsbc.com/row/c3153e8cfbe9953100ede3f0a6b147b7484b90075fc4c3f4b4486d82562870cd",
+    "label" : "Limit Monitoring Position Flag",
+    "type" : "collibra:BusinessDataElement"
+  }, {
+    "@id" : "http://www.hsbc.com/row/4a6f292b3ec1b2608dfc2086484dccbeef3702efaaf182d1c17a230553516ccd",
+    "dataElementDescription" : "The domestic risk-free interest rate at time T",
+    "group" : "http://www.hsbc.com/row/e56c167a9e3a060f564edfa99dcdcb4bd1a416b7a06793604c8b310134345dcf",
+    "label" : "Risk Free Rate (Domestic)",
+    "type" : "collibra:BusinessDataElement"
+  }, {
+    "@id" : "http://www.hsbc.com/row/56774c66895148bc0d7eff26e9d8764ede3a59ebbfa8fff173a57bb3b63e6201",
+    "dataElementDescription" : "DePeg RNIV shows the total risk for De peg currencies that is not calculated via VaR",
+    "group" : "http://www.hsbc.com/row/95a38b85133ec4ee027d914ce6df5c33d983c57324097020870f31c658ce4db8",
+    "label" : "FX De-Peg Risk Measure",
+    "type" : "collibra:BusinessDataElement"
+  }, {
+    "@id" : "http://www.hsbc.com/row/574f1c5cf83d9a84e22c9b1492565eb000491d235cb3a29e55c267d23fa5705b",
+    "dataElementDescription" : "Book level attribute which determines whether the exposures in that book need to be sent to Raven AA for the CVaR calculations",
+    "group" : "http://www.hsbc.com/row/c3153e8cfbe9953100ede3f0a6b147b7484b90075fc4c3f4b4486d82562870cd",
+    "label" : "CVaR Book",
+    "type" : "collibra:BusinessDataElement"
+  }, {
+    "@id" : "http://www.hsbc.com/row/5e9c69cbade978dc46469307ee912bbf82064178c6654e82adf1bdf01b2e53be",
+    "dataElementDescription" : "Derived rating [associated with the underlying instrument] based on Credit Spread per basis amount used to align the IRC Rating",
+    "group" : "http://www.hsbc.com/row/c3153e8cfbe9953100ede3f0a6b147b7484b90075fc4c3f4b4486d82562870cd",
+    "label" : "Credit Spread Basis Point Amount Limit Rating",
+    "type" : "collibra:BusinessDataElement"
+  }, {
+    "@id" : "http://www.hsbc.com/row/5eb96b27e297adb4bb361fad6bfa207e3e152e761bee0e41d5f3dd85b2b2b84d",
+    "dataElementDescription" : "Zero-coupon rates for 1W,1M,2M,3M,4M,5M,6M,9M,1Y,2Y,3Y,4Y,5Y,7Y,10Y tenors",
+    "group" : "http://www.hsbc.com/row/e56c167a9e3a060f564edfa99dcdcb4bd1a416b7a06793604c8b310134345dcf",
+    "label" : "Zero-coupoun Rate",
+    "type" : "collibra:BusinessDataElement"
+  }, {
+    "@id" : "http://www.hsbc.com/row/619a44efd4336a7043eee56be807412422221e423b37e5419b4e54dc89fd0de0",
+    "dataElementDescription" : "Debt seniority refers to the order of repayment in the event of a sale or bankruptcy of the issuer. Derived seniority [associated with the underlying instrument] used to map CS01 exposure to baseline and time series for IRC P&L calculation. If RefDebtSnrty is in ('Covered', 'Senior Secured', 'Senior Unsecured', 'Subordinated') then CVaRDebtSnrty = RefDebtSnrty else CVaRDebtSnrty = 'Subordinated'",
+    "group" : "http://www.hsbc.com/row/c3153e8cfbe9953100ede3f0a6b147b7484b90075fc4c3f4b4486d82562870cd",
+    "label" : "IRC Debt Seniority",
+    "type" : "collibra:BusinessDataElement"
+  }, {
+    "@id" : "http://www.hsbc.com/row/6d21101e31639dab9a2db251d97770c4ffaf69cfb5d2b4ca552c9124eee6a1d9",
+    "dataElementDescription" : [ "Close of Business Date defines the date for which the risk numbers will be calculated for. Close of Business Date used for reporting of VaR/SVaR/Max SVaR", "Close of Business defines the date for which the risk VAR will be calculated and submitted  to regulator" ],
+    "group" : "http://www.hsbc.com/row/c3153e8cfbe9953100ede3f0a6b147b7484b90075fc4c3f4b4486d82562870cd",
+    "label" : "Close of Business Date",
+    "type" : "collibra:BusinessDataElement"
+  }, {
+    "@id" : "http://www.hsbc.com/row/6f34f27fe31d885c7c96587a755053b398dafc7246c1697696c0e2a914a48b94",
+    "dataElementDescription" : "Default and rating transition risks at 99.9% c.l., 1 year horizon.",
+    "group" : "http://www.hsbc.com/row/7ad14091d56940cf38e01c3ab6f4f05b8add7cfa86c23fd4eda67735d0b832c3",
+    "label" : "IRC",
+    "type" : "collibra:BusinessDataElement"
+  }, {
+    "@id" : "http://www.hsbc.com/row/71da3910adcd575ce1b1ec4c56dd5b8586c734290812b34015a79ae076d79d81",
+    "dataElementDescription" : "A classification identifier that uniquely identifies a book.",
+    "group" : "http://www.hsbc.com/row/c3153e8cfbe9953100ede3f0a6b147b7484b90075fc4c3f4b4486d82562870cd",
+    "label" : "Book Identifier",
+    "type" : "collibra:BusinessDataElement"
+  }, {
+    "@id" : "http://www.hsbc.com/row/733f731fae0c518d9713d5cdc7979ab5014d032e792b619fe2e99de0589a468d",
+    "dataElementDescription" : "The rate specified in a currency forward transaction that locks in a foreign exchange rate between two currencies now, which will be exchanged on an agreed future date.",
+    "group" : "http://www.hsbc.com/row/f7ef80bf47a76ebd130d17d7e36d95157481aa0f8fd5e616caf474fc303db0cd",
+    "label" : "FX Forward Rate",
+    "type" : "collibra:BusinessDataElement"
+  }, {
+    "@id" : "http://www.hsbc.com/row/75a2321868ff15315580ba9cc244693ca5afb2040cb3800f2d9feb3d1e9ae273",
+    "dataElementDescription" : "Positive or negative shocks applied on the calculated PnL vectors or values, i.e. derived from a defined shift (e.g. +10%) to the corresponding USD-pair (e.g. USDAED) FX Spot rate",
+    "group" : "http://www.hsbc.com/row/c3153e8cfbe9953100ede3f0a6b147b7484b90075fc4c3f4b4486d82562870cd",
+    "label" : "PnL Ladders",
+    "type" : "collibra:BusinessDataElement"
+  }, {
+    "@id" : "http://www.hsbc.com/row/799e199aeeb6e2761e7239bba0b8a63051263da5822707e509bd0182273aed9b",
+    "dataElementDescription" : "Derived product type used to determine whether a particular trade/position in spear needs to be part of the CVaR calculation",
+    "group" : "http://www.hsbc.com/row/c3153e8cfbe9953100ede3f0a6b147b7484b90075fc4c3f4b4486d82562870cd",
+    "label" : "CVAR Product Type",
+    "type" : "collibra:BusinessDataElement"
+  }, {
+    "@id" : "http://www.hsbc.com/row/8122f1eb33bbc73486cd4e83d7259a2f26f309b7256b086ac514c1192c180590",
+    "dataElementDescription" : "Scope defines the relevancy in the IRC Calculation",
+    "group" : "http://www.hsbc.com/row/c3153e8cfbe9953100ede3f0a6b147b7484b90075fc4c3f4b4486d82562870cd",
+    "label" : "IRC Scope",
+    "type" : "collibra:BusinessDataElement"
+  }, {
+    "@id" : "http://www.hsbc.com/row/857c7403254417040e90ae1c6a3286bf2e5525842df59f9adb42c1531372b35e",
+    "dataElementDescription" : "A region of the world where HSBC operates, as outlined by Group Strategy and Planning. ",
+    "group" : "http://www.hsbc.com/row/c3153e8cfbe9953100ede3f0a6b147b7484b90075fc4c3f4b4486d82562870cd",
+    "label" : "Region",
+    "type" : "collibra:BusinessDataElement"
+  }, {
+    "@id" : "http://www.hsbc.com/row/86bfc9392b1ce610c161633162f51d6981c9dc3094d048729df448ab290e2e01",
+    "dataElementDescription" : [ "Incremental value at risk, or iVaR, is a measure of risk attribution. It tells us how much risk a position or sub-portfolio is adding to a portfolio.", "Default and rating transition risks at 99.9% c.l., 1 year horizon." ],
+    "group" : "http://www.hsbc.com/row/468c74f4498851fbdc2349c8c15faee4f1d804df0175bdbd89d7891eb9d1e465",
+    "label" : "IRC",
+    "type" : "collibra:BusinessDataElement"
+  }, {
+    "@id" : "http://www.hsbc.com/row/872d5c2896447f59a2c6538b1610c358f19af13a545dc076d06daa90912896bf",
+    "dataElementDescription" : "Derived country [associated with the issuer] used to map CS01 exposure to baseline and time series for CVaR P&L calculation used in VaR/SVaR/Max SVaR",
+    "group" : "http://www.hsbc.com/row/c3153e8cfbe9953100ede3f0a6b147b7484b90075fc4c3f4b4486d82562870cd",
+    "label" : "CVAR Country",
+    "type" : "collibra:BusinessDataElement"
+  }, {
+    "@id" : "http://www.hsbc.com/row/89dbb54002c785b31a8dc4718818dcb93c87d72880e1fde52b4ff94d9b4dc275",
+    "dataElementDescription" : "A threshold amount that represents the minimum capital amount required for market risk positions",
+    "group" : "http://www.hsbc.com/row/7ad14091d56940cf38e01c3ab6f4f05b8add7cfa86c23fd4eda67735d0b832c3",
+    "label" : "Market Risk RWAs",
+    "type" : "collibra:BusinessDataElement"
+  }, {
+    "@id" : "http://www.hsbc.com/row/8cc2de0e43874083fd637ff6094eec78d29e45b285ec329f272cce6938064118",
+    "dataElementDescription" : "The domestic risk-free interest rate at time T",
+    "group" : "http://www.hsbc.com/row/e56c167a9e3a060f564edfa99dcdcb4bd1a416b7a06793604c8b310134345dcf",
+    "label" : "Risk Free Rate(domestic)",
+    "type" : "collibra:BusinessDataElement"
+  }, {
+    "@id" : "http://www.hsbc.com/row/9131c44206eb92b033d38dca8cabf56d69fface6e8481502bd953d1da634cba2",
+    "dataElementDescription" : "Required for default calculation in the IRC model.   ",
+    "group" : "http://www.hsbc.com/row/c3153e8cfbe9953100ede3f0a6b147b7484b90075fc4c3f4b4486d82562870cd",
+    "label" : "IRC Recovery Rate",
+    "type" : "collibra:BusinessDataElement"
+  }, {
+    "@id" : "http://www.hsbc.com/row/92de6e8bab1f1b882962b73f69eb5ed7a9f3d5df6285e059c4addbf99460a963",
+    "dataElementDescription" : "The foreign risk-free interest rate at time T",
+    "group" : "http://www.hsbc.com/row/e56c167a9e3a060f564edfa99dcdcb4bd1a416b7a06793604c8b310134345dcf",
+    "label" : "Risk Free Rate (Foreign)",
+    "type" : "collibra:BusinessDataElement"
+  }, {
+    "@id" : "http://www.hsbc.com/row/95d0646aa26385eae5ec3936035a9aa0303889f97cdcb901cf2ff1923e958b35",
+    "dataElementDescription" : "The smallest discreet unit of an organization of a banking entity that purchases or sells Financial Instruments for the trading account of the banking entity.",
+    "group" : "http://www.hsbc.com/row/c3153e8cfbe9953100ede3f0a6b147b7484b90075fc4c3f4b4486d82562870cd",
+    "label" : "Desk name",
+    "type" : "collibra:BusinessDataElement"
+  }, {
+    "@id" : "http://www.hsbc.com/row/9fc8f3d29c11f2f4f7508689bb92febdf0b8102f16e0b6013bf4525c1155c5a7",
+    "dataElementDescription" : "The currency used for aggregation.",
+    "group" : "http://www.hsbc.com/row/c3153e8cfbe9953100ede3f0a6b147b7484b90075fc4c3f4b4486d82562870cd",
+    "label" : "Aggregation Currency",
+    "type" : "collibra:BusinessDataElement"
+  }, {
+    "@id" : "http://www.hsbc.com/row/a043f070d8ddf5791f25731c67bb2d9cc014421f18b2bd67049307b7c3f3f5f4",
+    "dataElementDescription" : "Derived seniority [associated with the underlying instrument] used to map CS01 exposure to baseline and time series for CVaR P&L calculation used in VaR/SVaR/Max SVaR",
+    "group" : "http://www.hsbc.com/row/c3153e8cfbe9953100ede3f0a6b147b7484b90075fc4c3f4b4486d82562870cd",
+    "label" : "CVAR Debt Seniority",
+    "type" : "collibra:BusinessDataElement"
+  }, {
+    "@id" : "http://www.hsbc.com/row/a3f19a8740a092ceeb64b9e62f24c46c9c2dce9ad6037a06680c33d5e6b9924f",
+    "dataElementDescription" : "A contractual amount on a financial instrument position or trade which is the nominal or face amount used to calculate payments made (and hence associated exposure) on that instrument.",
+    "group" : "http://www.hsbc.com/row/c3153e8cfbe9953100ede3f0a6b147b7484b90075fc4c3f4b4486d82562870cd",
+    "label" : "Notional Amount",
+    "type" : "collibra:BusinessDataElement"
+  }, {
+    "@id" : "http://www.hsbc.com/row/a55b946e66ffa4ad70076a5d810fb2ebb4f4a5c8fc5679a2cb1b7a9235180eed",
+    "dataElementDescription" : "An application instance which provides the Trade data.",
+    "group" : "http://www.hsbc.com/row/c3153e8cfbe9953100ede3f0a6b147b7484b90075fc4c3f4b4486d82562870cd",
+    "label" : "Source System",
+    "type" : "collibra:BusinessDataElement"
+  }, {
+    "@id" : "http://www.hsbc.com/row/ac0e0d041ccf0680995cfb2ccbd1299b48b6f3856bc5a9c613bbe5b2eceb8726",
+    "dataElementDescription" : "DePeg RNIV shows the total risk for De peg currencies that is not calculated via VaR",
+    "group" : "http://www.hsbc.com/row/abe24096bcc8ef15d1807d22c1ff4eae57fb81838392576d05e36a84ad2630be",
+    "label" : "FX De-Peg Risk Measure",
+    "type" : "collibra:BusinessDataElement"
+  }, {
+    "@id" : "http://www.hsbc.com/row/acc2a0910c6f5786cbcd41ffec8d33f12a5074f2b35022d4cf42c708760d393c",
+    "dataElementDescription" : "Derived rating [associated with the underlying instrument] used to map CS01 exposure to baseline and time series for CVaR P&L calculation used in VaR/SVaR/Max SVaR",
+    "group" : "http://www.hsbc.com/row/c3153e8cfbe9953100ede3f0a6b147b7484b90075fc4c3f4b4486d82562870cd",
+    "label" : "CVAR Rating",
+    "type" : "collibra:BusinessDataElement"
+  }, {
+    "@id" : "http://www.hsbc.com/row/bd4c9e347aa51c94e7406209672d72cda559c5883f4b5813252216132b10420d",
+    "dataElementDescription" : "The values of strike, maturity, and implied volatilities for USD/EUR-pair (e.g. USD|AED)",
+    "group" : "http://www.hsbc.com/row/272e7be74ec5203e05c221fbe74ca08f3d7a6c270d10f988fcd917b2e34650d9",
+    "label" : "FX Option Smile",
+    "type" : "collibra:BusinessDataElement"
+  }, {
+    "@id" : "http://www.hsbc.com/row/c00fc50bc94c548a2213c9e43cbbaeaeac492a0a3595d2e5ceeb12ee42d9c564",
+    "dataElementDescription" : "The rate specified in a currency forward transaction that locks in a foreign exchange rate between two currencies now, which will be exchanged on the spot.",
+    "group" : "http://www.hsbc.com/row/f7ef80bf47a76ebd130d17d7e36d95157481aa0f8fd5e616caf474fc303db0cd",
+    "label" : "FX Spot Rate",
+    "type" : "collibra:BusinessDataElement"
+  }, {
+    "@id" : "http://www.hsbc.com/row/c0ce90c0a56efa06eb59db2bae219991e812c46743175ed04681fa691c473431",
+    "dataElementDescription" : "Spot rate for USD/EUR-pair (e.g. USDAED)",
+    "group" : "http://www.hsbc.com/row/e56c167a9e3a060f564edfa99dcdcb4bd1a416b7a06793604c8b310134345dcf",
+    "label" : "Spot Rate",
+    "type" : "collibra:BusinessDataElement"
+  }, {
+    "@id" : "http://www.hsbc.com/row/c7a46f325aa3e6febd47a4c3163f82656be15890192c5f362ed2be62b4910b36",
+    "dataElementDescription" : "The smallest discreet unit of an organization of a banking entity that purchases or sells Financial Instruments for the trading account of the banking entity. ",
+    "group" : "http://www.hsbc.com/row/33f6199401c27bfd345515225464f3b2c9e1ee296b4228718485c29f2372816d",
+    "label" : "Volcker Trading Desk",
+    "type" : "collibra:BusinessDataElement"
+  }, {
+    "@id" : "http://www.hsbc.com/row/cd8ff9d36277cca4b06560bd1de493ee657ac9437fb2e4f3862f288e34d2d96a",
+    "dataElementDescription" : "A party that is capable of entering into legally binding agreements",
+    "group" : "http://www.hsbc.com/row/33f6199401c27bfd345515225464f3b2c9e1ee296b4228718485c29f2372816d",
+    "label" : "Legal Hierarchy",
+    "type" : "collibra:BusinessDataElement"
+  }, {
+    "@id" : "http://www.hsbc.com/row/d011487f292d88d7fd80bc8343921cf24a75f723f651f00f3270edf93f87c0d9",
+    "dataElementDescription" : "The values of maturity, and ATM implied volatilities for USD/EUR-pair (e.g. USD|AED)",
+    "group" : "http://www.hsbc.com/row/272e7be74ec5203e05c221fbe74ca08f3d7a6c270d10f988fcd917b2e34650d9",
+    "label" : "FX Option Smile ATM",
+    "type" : "collibra:BusinessDataElement"
+  }, {
+    "@id" : "http://www.hsbc.com/row/d134caec553eaf1a50f3e376dd4e496a1851725a6ca1ed7911c8a5a045c4eab6",
+    "dataElementDescription" : "The foreign risk-free interest rate at time T",
+    "group" : "http://www.hsbc.com/row/e56c167a9e3a060f564edfa99dcdcb4bd1a416b7a06793604c8b310134345dcf",
+    "label" : "Risk Free Rate(foreign)",
+    "type" : "collibra:BusinessDataElement"
+  }, {
+    "@id" : "http://www.hsbc.com/row/d85e49d06b9315b8785ebb2275fd72e0058c9c4740331fb66f4e5853e0906433",
+    "dataElementDescription" : "A credit risk rating is a quantified assessment of the creditworthiness of a borrower in general terms or with respect to a particular debt or financial obligation",
+    "group" : "http://www.hsbc.com/row/c3153e8cfbe9953100ede3f0a6b147b7484b90075fc4c3f4b4486d82562870cd",
+    "label" : "Credit risk rating - standard CRR",
+    "type" : "collibra:BusinessDataElement"
+  }, {
+    "@id" : "http://www.hsbc.com/row/d8fff6c4a759e9cc98c3ae3d249fb273cc57ac3c419ae10638b6d46a069cb226",
+    "dataElementDescription" : "An identifier that uniquely distinguishes a trade.",
+    "group" : "http://www.hsbc.com/row/c3153e8cfbe9953100ede3f0a6b147b7484b90075fc4c3f4b4486d82562870cd",
+    "label" : "Trade Identifier",
+    "type" : "collibra:BusinessDataElement"
+  }, {
+    "@id" : "http://www.hsbc.com/row/e0ecff624d29c798cf1a3f999f084d3ee1d5363196325ddb01f3a5e670ca8182",
+    "dataElementDescription" : "Obligor attribute which describes the entity debt, the coupon type and the calculation type. Determines \"IN DEFAULT\" positions which hold zero credit sensitivity",
+    "group" : "http://www.hsbc.com/row/c3153e8cfbe9953100ede3f0a6b147b7484b90075fc4c3f4b4486d82562870cd",
+    "label" : "Calculation Description",
+    "type" : "collibra:BusinessDataElement"
+  }, {
+    "@id" : "http://www.hsbc.com/row/e3c46b1f2fbb853600ca69788c87f9671389f8c550243c1191d74b1e8857994e",
+    "dataElementDescription" : "Sector [associated with the underlying instrument] used to map CS01 exposure to baseline and time series for CVaR P&L calculation used in VaR/SVaR/Max SVaR",
+    "group" : "http://www.hsbc.com/row/c3153e8cfbe9953100ede3f0a6b147b7484b90075fc4c3f4b4486d82562870cd",
+    "label" : "CVAR MarkIt Sector Code",
+    "type" : "collibra:BusinessDataElement"
+  }, {
+    "@id" : "http://www.hsbc.com/row/e3d2b7c9d0a960f0cfe54b7064c3dbfe4607309a113b041b4599f70358ac693a",
+    "dataElementDescription" : "A credit risk amount that represents the maximum loss which HSBC might suffer if an obligor defaults",
+    "group" : "http://www.hsbc.com/row/c3153e8cfbe9953100ede3f0a6b147b7484b90075fc4c3f4b4486d82562870cd",
+    "label" : "exposure at default amount",
+    "type" : "collibra:BusinessDataElement"
+  }, {
+    "@id" : "http://www.hsbc.com/row/e67513d06598291e9115b38a89efa9259a1f6d7f15a1a25e0b1e1576b77a4051",
+    "dataElementDescription" : "Sector [associated with the underlying instrument] used to map Credit spread per basis point exposure to baseline and time series for CVaR P&L calculation used in VaR/SVaR/Max SVaR",
+    "group" : "http://www.hsbc.com/row/c3153e8cfbe9953100ede3f0a6b147b7484b90075fc4c3f4b4486d82562870cd",
+    "label" : "IRC Sector",
+    "type" : "collibra:BusinessDataElement"
+  }, {
+    "@id" : "http://www.hsbc.com/row/f6689e269456c61688f8ea9e27a43b53f3851d0e8378e8c27a87cbc7ebd9d2a3",
+    "dataElementDescription" : "A legal entity whose changes in credit spread need to be simulated in the VaR/SVaR /Max SVaR calculations.",
+    "group" : "http://www.hsbc.com/row/c3153e8cfbe9953100ede3f0a6b147b7484b90075fc4c3f4b4486d82562870cd",
+    "label" : "CVAR Obligor",
+    "type" : "collibra:BusinessDataElement"
+  }, {
+    "@id" : "http://www.hsbc.com/row/fb5bf1a7037143581d9d4d5d4cb2acad61faab5ec51cffe93292bec642a42ed3",
+    "dataElementDescription" : "A financial security identifier which uniquely identifies a financial security. (i.e. ISIN)",
+    "group" : "http://www.hsbc.com/row/c3153e8cfbe9953100ede3f0a6b147b7484b90075fc4c3f4b4486d82562870cd",
+    "label" : "Financial security identifier",
+    "type" : "collibra:BusinessDataElement"
+  }, {
+    "@id" : "http://www.hsbc.com/row/fcadf7db0402e708b5255e132aff42f2e560771125a6a77be9223a611a869d7b",
+    "dataElementDescription" : "Product Sub type is defined as the different variants of the same  Product ",
+    "group" : "http://www.hsbc.com/row/c3153e8cfbe9953100ede3f0a6b147b7484b90075fc4c3f4b4486d82562870cd",
+    "label" : "Product Sub Type",
+    "type" : "collibra:BusinessDataElement"
+  }, {
+    "@id" : "http://www.hsbc.com/row/fd6cf57e3e0a778625badc6ca4604d338f7947556d0fddc43dce8684837cdab8",
+    "dataElementDescription" : "Close of Business defines the date for which the risk VAR will be calculated and submitted  to regulator",
+    "group" : "http://www.hsbc.com/row/33f6199401c27bfd345515225464f3b2c9e1ee296b4228718485c29f2372816d",
+    "label" : "Close of Business Date",
+    "type" : "collibra:BusinessDataElement"
+  } ],
+  "@context" : {
+    "dataElementDescription" : {
+      "@id" : "http://www.hsbc.com/vis/dataElementDescription"
+    },
+    "type" : {
+      "@id" : "http://www.hsbc.com/vis/type",
+      "@type" : "@id"
+    },
+    "label" : {
+      "@id" : "http://www.hsbc.com/vis/label"
+    },
+    "group" : {
+      "@id" : "http://www.hsbc.com/vis/group",
+      "@type" : "@id"
+    },
+    "casewise" : "http://www.hsbc.com/casewise/",
+    "vis" : "http://www.hsbc.com/vis/",
+    "collibra" : "http://www.hsbc.com/collibra/",
+    "owl" : "http://wwww.w3.org/2002/07/owl#",
+    "eim" : "http://www.hsbc.com/eim/"
+  }
+}

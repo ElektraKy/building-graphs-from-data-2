@@ -1,0 +1,141 @@
+{
+  "@graph" : [ {
+    "@id" : "casewise:businessProcess/06bf51972eb111ed84940022483fd6a5",
+    "businessProcessDescription" : "This Process consumes the Metrics via GRP & Emails etc,  calculated by Traded risk Systems (i.e VaR, IRC, DPRM etc),Product control & Finance and produce the RMM report for HNAH entity.",
+    "businessProcessOwner" : "Daniel W Bernstein",
+    "label" : "Produce & Distribute HNAH Risk Management Meeting (RMM) Report",
+    "scope" : "BCBS239",
+    "type" : "casewise:BusinessProcess"
+  }, {
+    "@id" : "casewise:businessProcess/06bf51a12eb111ed84940022483fd6a5",
+    "businessProcessDescription" : "This process generates the Market Risk Capital Metrics i.e IRC, DePeg Risk & Market risk RWA, for all  Trade positions which are not covered or calculated by Value at Risk Calculation process.",
+    "businessProcessOwner" : "Wayne Wharton",
+    "label" : "Generate Market Risk Capital Metrics",
+    "scope" : "BCBS239",
+    "type" : "casewise:BusinessProcess"
+  }, {
+    "@id" : "eim:App_Inst/10269148",
+    "AppBusinessOwner" : "Marvin AMPARO SANTANA",
+    "AppDescription" : "Consolidates exposures to be reviewed at governance meetings.",
+    "group" : "casewise:businessProcess/06bf51972eb111ed84940022483fd6a5",
+    "label" : "Traded Risk Template",
+    "type" : "eim:App_Instance"
+  }, {
+    "@id" : "eim:App_Inst/242768",
+    "AppBusinessOwner" : "M Pam KAUR",
+    "AppDescription" : "This risk engine application takes trade level credit sensitivity feeds to provide calculation result for IRC and Credit VaR (ABS product only) for entities globally",
+    "group" : "casewise:businessProcess/06bf51a12eb111ed84940022483fd6a5",
+    "label" : "Incremental Risk Charge",
+    "type" : "eim:App_Instance"
+  }, {
+    "@id" : "eim:App_Inst/8707422",
+    "AppBusinessOwner" : "Yuwen MA",
+    "AppDescription" : "As a historic VaR measure would not reflect the risk of a peg break and change in currency regime, a De-Peg Risk Measure (DPRM, Figure 2 of the Appendix) is used to account for the risk of a shift from the pegged/managed regime to a floating one. The most significant currencies contributing to the DPRM are HKD, CNY/CNH, QAR, SAR, AED. Risk is capitalised through a Pillar 1 add-on (based on DPRM)",
+    "group" : "casewise:businessProcess/06bf51a12eb111ed84940022483fd6a5",
+    "label" : "Global FX DPRM",
+    "type" : "eim:App_Instance"
+  }, {
+    "@id" : "http://www.hsbc.com/row/272e7be74ec5203e05c221fbe74ca08f3d7a6c270d10f988fcd917b2e34650d9",
+    "databaseDescription" : "Fx Volatility Smiles data is sourced from Raven CR",
+    "group" : "eim:App_Inst/8707422",
+    "label" : "Global RAVEN CR FX Volatility Smiles DataSet",
+    "type" : "collibra:BusinessDataSet"
+  }, {
+    "@id" : "http://www.hsbc.com/row/33f6199401c27bfd345515225464f3b2c9e1ee296b4228718485c29f2372816d",
+    "databaseDescription" : "PnL Ladders are sourced from MARS",
+    "group" : "eim:App_Inst/8707422",
+    "label" : "Global MARS DPRM DataSet",
+    "type" : "collibra:BusinessDataSet"
+  }, {
+    "@id" : "http://www.hsbc.com/row/468c74f4498851fbdc2349c8c15faee4f1d804df0175bdbd89d7891eb9d1e465",
+    "databaseDescription" : "IRC Dataset defines the capitalise risks due to jump to default and credit migration.",
+    "group" : "eim:App_Inst/242768",
+    "label" : "Global Incremental Risk Charge DataSet",
+    "type" : "collibra:BusinessDataSet"
+  }, {
+    "@id" : "http://www.hsbc.com/row/7ad14091d56940cf38e01c3ab6f4f05b8add7cfa86c23fd4eda67735d0b832c3",
+    "databaseDescription" : "Total Market Risk Weighted Assets exposures as calculated by the Market Risk managers ",
+    "group" : "eim:App_Inst/10269148",
+    "label" : "US Market Risk RWA Exposures 5996804",
+    "type" : "collibra:BusinessDataSet"
+  }, {
+    "@id" : "http://www.hsbc.com/row/95a38b85133ec4ee027d914ce6df5c33d983c57324097020870f31c658ce4db8",
+    "databaseDescription" : "This measures defines the risk of currency de-peg events i.e  of a switch from a fixed/managed regime to a floating one",
+    "group" : "eim:App_Inst/10269148",
+    "label" : "US TRC_Global FX Report Builder EUC 8704743",
+    "type" : "collibra:BusinessDataSet"
+  }, {
+    "@id" : "http://www.hsbc.com/row/9b9f1c5fb9d809cfd494594aaf78660cae5831747cb36312c3c3a2c4a7a2e61a",
+    "group" : "casewise:businessProcess/06bf51972eb111ed84940022483fd6a5",
+    "label" : "HNAH Risk Management Meeting (RMM)",
+    "reportDescription" : "HNAH RMM purpose is to monitor the risk management requirements of HNAH entity covering areas such as market, credit, operational, financial and legal risks, including performance, capital, balance sheet and funding requirements.",
+    "reportOwner" : "Daniel W Bernstein",
+    "type" : "collibra:Report"
+  }, {
+    "@id" : "http://www.hsbc.com/row/abe24096bcc8ef15d1807d22c1ff4eae57fb81838392576d05e36a84ad2630be",
+    "databaseDescription" : "DePeg risk will be calculated for the depeg currency ",
+    "group" : "eim:App_Inst/8707422",
+    "label" : "Global De-Peg Risk Measure Dataset",
+    "type" : "collibra:BusinessDataSet"
+  }, {
+    "@id" : "http://www.hsbc.com/row/c3153e8cfbe9953100ede3f0a6b147b7484b90075fc4c3f4b4486d82562870cd",
+    "databaseDescription" : "This Dataset contains the Input like Obligor, Ratings and credit Spead",
+    "group" : "eim:App_Inst/242768",
+    "label" : "Global SPEAR IRC Dataset",
+    "type" : "collibra:BusinessDataSet"
+  }, {
+    "@id" : "http://www.hsbc.com/row/e56c167a9e3a060f564edfa99dcdcb4bd1a416b7a06793604c8b310134345dcf",
+    "databaseDescription" : "Receive zero coupoun rate and risk free rates",
+    "group" : "eim:App_Inst/8707422",
+    "label" : "Global Sigma Zero Rate DataSet",
+    "type" : "collibra:BusinessDataSet"
+  }, {
+    "@id" : "http://www.hsbc.com/row/f7ef80bf47a76ebd130d17d7e36d95157481aa0f8fd5e616caf474fc303db0cd",
+    "databaseDescription" : "FX Forward and Sport rates are sourced from DMDS",
+    "group" : "eim:App_Inst/8707422",
+    "label" : "Global DMDS FX Spot Forward DataSet",
+    "type" : "collibra:BusinessDataSet"
+  } ],
+  "@context" : {
+    "type" : {
+      "@id" : "http://www.hsbc.com/vis/type",
+      "@type" : "@id"
+    },
+    "databaseDescription" : {
+      "@id" : "http://www.hsbc.com/vis/databaseDescription"
+    },
+    "group" : {
+      "@id" : "http://www.hsbc.com/vis/group",
+      "@type" : "@id"
+    },
+    "label" : {
+      "@id" : "http://www.hsbc.com/vis/label"
+    },
+    "AppDescription" : {
+      "@id" : "http://www.hsbc.com/vis/AppDescription"
+    },
+    "AppBusinessOwner" : {
+      "@id" : "http://www.hsbc.com/vis/AppBusinessOwner"
+    },
+    "businessProcessDescription" : {
+      "@id" : "http://www.hsbc.com/vis/businessProcessDescription"
+    },
+    "businessProcessOwner" : {
+      "@id" : "http://www.hsbc.com/vis/businessProcessOwner"
+    },
+    "scope" : {
+      "@id" : "http://www.hsbc.com/vis/scope"
+    },
+    "reportDescription" : {
+      "@id" : "http://www.hsbc.com/vis/reportDescription"
+    },
+    "reportOwner" : {
+      "@id" : "http://www.hsbc.com/vis/reportOwner"
+    },
+    "casewise" : "http://www.hsbc.com/casewise/",
+    "vis" : "http://www.hsbc.com/vis/",
+    "collibra" : "http://www.hsbc.com/collibra/",
+    "owl" : "http://wwww.w3.org/2002/07/owl#",
+    "eim" : "http://www.hsbc.com/eim/"
+  }
+}
