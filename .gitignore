@@ -1,1 +1,8 @@
 node_modules
+src/GraphData_smaller.json
+src/GraphData_small.json
+src/groupsource_old.json
+src/nodessource_old.json
+src/edgesource_old.json
+src/SampleApplication_old_version.ts
+src/SampleApplication_original.ts

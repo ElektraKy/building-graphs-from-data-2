@@ -1,0 +1,54 @@
+{
+  "@graph" : [ {
+    "@id" : "http://www.hsbc.com/row/56774c66895148bc0d7eff26e9d8764ede3a59ebbfa8fff173a57bb3b63e6201",
+    "dataElementDescription" : "DePeg RNIV shows the total risk for De peg currencies that is not calculated via VaR",
+    "group" : "http://www.hsbc.com/row/95a38b85133ec4ee027d914ce6df5c33d983c57324097020870f31c658ce4db8",
+    "label" : "FX De-Peg Risk Measure",
+    "type" : "collibra:BusinessDataElement"
+  }, {
+    "@id" : "http://www.hsbc.com/row/6f34f27fe31d885c7c96587a755053b398dafc7246c1697696c0e2a914a48b94",
+    "dataElementDescription" : "Default and rating transition risks at 99.9% c.l., 1 year horizon.",
+    "group" : "http://www.hsbc.com/row/7ad14091d56940cf38e01c3ab6f4f05b8add7cfa86c23fd4eda67735d0b832c3",
+    "label" : "IRC",
+    "type" : "collibra:BusinessDataElement"
+  }, {
+    "@id" : "http://www.hsbc.com/row/86bfc9392b1ce610c161633162f51d6981c9dc3094d048729df448ab290e2e01",
+    "dataElementDescription" : [ "Incremental value at risk, or iVaR, is a measure of risk attribution. It tells us how much risk a position or sub-portfolio is adding to a portfolio.", "Default and rating transition risks at 99.9% c.l., 1 year horizon." ],
+    "group" : "http://www.hsbc.com/row/468c74f4498851fbdc2349c8c15faee4f1d804df0175bdbd89d7891eb9d1e465",
+    "label" : "IRC",
+    "type" : "collibra:BusinessDataElement"
+  }, {
+    "@id" : "http://www.hsbc.com/row/89dbb54002c785b31a8dc4718818dcb93c87d72880e1fde52b4ff94d9b4dc275",
+    "dataElementDescription" : "A threshold amount that represents the minimum capital amount required for market risk positions",
+    "group" : "http://www.hsbc.com/row/7ad14091d56940cf38e01c3ab6f4f05b8add7cfa86c23fd4eda67735d0b832c3",
+    "label" : "Market Risk RWAs",
+    "type" : "collibra:BusinessDataElement"
+  }, {
+    "@id" : "http://www.hsbc.com/row/ac0e0d041ccf0680995cfb2ccbd1299b48b6f3856bc5a9c613bbe5b2eceb8726",
+    "dataElementDescription" : "DePeg RNIV shows the total risk for De peg currencies that is not calculated via VaR",
+    "group" : "http://www.hsbc.com/row/abe24096bcc8ef15d1807d22c1ff4eae57fb81838392576d05e36a84ad2630be",
+    "label" : "FX De-Peg Risk Measure",
+    "type" : "collibra:BusinessDataElement"
+  } ],
+  "@context" : {
+    "dataElementDescription" : {
+      "@id" : "http://www.hsbc.com/vis/dataElementDescription"
+    },
+    "type" : {
+      "@id" : "http://www.hsbc.com/vis/type",
+      "@type" : "@id"
+    },
+    "label" : {
+      "@id" : "http://www.hsbc.com/vis/label"
+    },
+    "group" : {
+      "@id" : "http://www.hsbc.com/vis/group",
+      "@type" : "@id"
+    },
+    "casewise" : "http://www.hsbc.com/casewise/",
+    "vis" : "http://www.hsbc.com/vis/",
+    "collibra" : "http://www.hsbc.com/collibra/",
+    "owl" : "http://wwww.w3.org/2002/07/owl#",
+    "eim" : "http://www.hsbc.com/eim/"
+  }
+}

@@ -33,7 +33,7 @@ import {
   EdgePathLabelModel,
   EdgeSides,
   GraphComponent,
-  GraphEditorInputMode,
+  //GraphEditorInputMode,
   GroupNodeLabelModel,
   GroupNodeStyle,
   ICommand,
@@ -47,19 +47,29 @@ import {
   LayoutExecutor,
   LayoutOrientation,
   Class,
-  Color,
-  FontWeight,
+  //Color,
+  //FontWeight,
   TextWrapping,
-  GraphViewerInputMode
+  GraphViewerInputMode,
+  InteriorLabelModel,
+  LabelStyleBase,
+  TemplateLabelStyle,
+  LabelsSource,
+  //INodeSizeConstraintProvider,
+  //ILabel,
+  //LabelAngleOnRightSideOffsets,
+  //LabelDefaults
 } from 'yfiles'
 
 import { bindAction, bindCommand, showApp } from './demo-app/demo-app'
 import { applyDemoTheme, initDemoStyles } from './demo-app/demo-styles'
 import { fetchLicense } from './demo-app/fetch-license'
-// import { ViewBridgeLayout } from 'yfiles/view-layout-bridge'
+//import { ViewBridgeLayout } from 'yfiles/view-layout-bridge'
 import {HierarchicLayout} from 'yfiles/layout-hierarchic'
 
 let graphComponent: GraphComponent
+
+
 
 /**
  * Bootstraps the demo.
@@ -67,24 +77,27 @@ let graphComponent: GraphComponent
 async function run(): Promise<void> {
   License.value = await fetchLicense()
   graphComponent = new GraphComponent('#graphComponent')
-  applyDemoTheme(graphComponent)
+  //applyDemoTheme(graphComponent)
 
   //determine the mode for the user (interactions allowed)
   //see here https://docs.yworks.com/yfiles-html/api/GraphEditorInputMode.html
   //and here https://docs.yworks.com/yfiles-html/dguide/interaction/interaction-support.html
   //graphComponent.inputMode = new GraphEditorInputMode({
-  //  allowGroupingOperations: false //change this if needed
+  //  allowGroupingOperations: false
   //})
-  graphComponent.inputMode = new GraphViewerInputMode()
+  
+  graphComponent.inputMode = new GraphViewerInputMode() 
 
   // configures default styles for newly created graph elements
   initTutorialDefaults(graphComponent.graph)
-  try {
-    // load the graph data from the given JSON file
-    const nodesData1 = await loadJSON('./nodessource.json')
-    const groupsData1 = await loadJSON('./groupsource.json')
-    const edgesData = await loadJSON('./GraphData.json') //change this to edgesData - todo
 
+  try {
+
+    // *****OPTION 1: FOR SPARQL OUTPUTS ******
+    // for SPARQL outputs only: load the graph data from the given JSON files - 
+    const nodesData1 = await loadJSON('./nodesource.json')
+    const groupsData1 = await loadJSON('./groupsource.json')
+    const edgesData = await loadJSON('./edgesource.json')
     // replace all @id with id and first @graph instance with graph
     const nodes_str = JSON.stringify(nodesData1).replace(/@id/g, 'id').replace('@graph','graph')
     const nodesData = JSON.parse(nodes_str);
@@ -93,22 +106,37 @@ async function run(): Promise<void> {
 
     // then build the graph with the given data set using the Sparql-formatted json files
     buildGraph_fromSparql(graphComponent.graph, nodesData, groupsData, edgesData) // use the adjusted buildGraph that reads 3 individual Sparql-formatted json files
-    //buildGraph(graphComponent.graph, graphData) //use this for a single json
+    // *************END OF OPTION 1**********
+    
+    // *****OPTION 2: WHEN USING A SINGLE JSON FILE FOR ALL THE DATA********
+    //const graphData = await loadJSON('./GraphData.json')
+    //uildGraph(graphComponent.graph, graphData) //use this for a single json
+    // *************END OF OPTION 2**********
     
     graphComponent.fitGraphBounds()
 
-    // Often, the input data has no layout information at all. In this case you can apply any of the automatic layout
-    // algorithms, to automatically layout your input data, e.g. with HierarchicLayout. Make sure to require the
-    // relevant modules for example yfiles/view-layout-bridge and yfiles/layout-hierarchic
-
+    // APPLY THE LAYOUT
     const customLayout = new HierarchicLayout()
     // Use left-to-right main layout direction.
     customLayout.layoutOrientation = LayoutOrientation.LEFT_TO_RIGHT
-    customLayout.gridSpacing = 15
-    customLayout.minimumLayerDistance = 100
+    customLayout.gridSpacing = 25 //this affects the distance between groups - subgroups
+    customLayout.minimumLayerDistance = 130
     customLayout.considerNodeLabels = true
   
     graphComponent.morphLayout(customLayout, '1s');
+
+    // LOAD INFORMATION FOR CLICKABLE ITEMS
+    (graphComponent.inputMode as GraphViewerInputMode)!.addItemClickedListener(
+      (sender, args): void => {
+        const node = args.item.tag
+        if (node.type.indexOf('collibra:BusinessDataElement') !== -1)
+          {console.log("Node clicked", sender, " args", node.label, node.type, node.bde_prop1, node.bde_prop2)}
+        else if (node.type.indexOf('collibra:ReportDataElement') !== -1)
+          {console.log("Node clicked", sender, " args", node.label, node.type, node.rde_prop1, node.rde_prop2)}
+        //do the same for group nodes - todo
+      // this.setState({ showFilters: true})
+      // this.onNodeClicked(args.item);
+    })
 
     // Finally, enable the undo engine. This prevents undoing of the graph creation
     graphComponent.graph.undoEngineEnabled = true
@@ -139,6 +167,9 @@ async function run(): Promise<void> {
  * @yjs:keep=groupsSource,nodesSource,edgesSource
  */
 
+
+
+
 function buildGraph_fromSparql(graph: IGraph, nodesData: any, groupsData: any, edgesData: any): void {
     // Store groups and nodes to be accessible by their IDs.
     // It will be easier to assign them as parents or connect them with edges afterwards.
@@ -148,79 +179,194 @@ function buildGraph_fromSparql(graph: IGraph, nodesData: any, groupsData: any, e
     const nodes: {
       [id: string]: INode
     } = {}
+
+    // Set the styles
+    //GROUPS STYLES
+    const grey_group_leftgrey = graph.groupNodeDefaults.style.clone() as GroupNodeStyle
+    grey_group_leftgrey.contentAreaFill = 'white'
+    grey_group_leftgrey.tabFill = 'grey'
+    grey_group_leftgrey.tabHeight = 30
+    grey_group_leftgrey.tabPosition =  'left'
+
+    const grey_group_topwhite = graph.groupNodeDefaults.style.clone() as GroupNodeStyle
+    grey_group_topwhite.contentAreaFill = 'white'
+    grey_group_topwhite.tabFill = 'grey'
+    grey_group_topwhite.tabHeight = 60
+
+    const red_group = graph.groupNodeDefaults.style.clone() as GroupNodeStyle
+    red_group.contentAreaFill = '#e02020'//red
+    red_group.tabFill = '#e02020' //red
+
+    const blue_group = graph.groupNodeDefaults.style.clone() as GroupNodeStyle
+    blue_group.contentAreaFill = '#0091FF'
+    blue_group.tabFill = '#0091FF'
+    blue_group.tabHeight = 50
+
+    const white_group = graph.groupNodeDefaults.style.clone() as GroupNodeStyle
+    white_group.contentAreaFill = 'white'
+    white_group.tabFill = 'white' 
+    white_group.tabHeight = 80
+
+    //NODES STYLES
+    const grey_node = graph.nodeDefaults.style.clone() as RectangleNodeStyle
+    grey_node.fill = '#d0d0d0' //grey
+
+    const white_node = graph.nodeDefaults.style.clone() as RectangleNodeStyle
+    white_node.fill = 'white'
+
+    //LABELS STYLES
+    const white_label = graph.groupNodeDefaults.labels.style.clone() as DefaultLabelStyle
+    white_label.textFill = 'white'
+
+    const grey_label = graph.groupNodeDefaults.labels.style.clone() as DefaultLabelStyle
+    grey_label.textFill = 'grey'
+
+    const white_on_grey_label = graph.groupNodeDefaults.labels.style.clone() as DefaultLabelStyle
+    white_on_grey_label.textFill = 'white'
+    white_on_grey_label.backgroundFill = 'grey'
+
+    const grey_on_white_label = graph.groupNodeDefaults.labels.style.clone() as DefaultLabelStyle
+    grey_on_white_label.textFill = 'grey'
+    grey_on_white_label.backgroundFill = 'white'
+  
+  
+  // Iterate the group data and create the according group nodes.
+  groupsData.graph.forEach((groupData: any): void => {
+    const group = graph.createGroupNode({
+      //labels: groupData.label != null ? [groupData.label] : [], //removed this to add custom label styles
+      tag: groupData
+    })
+    // Set style and label, based on the node type
+    if (groupData.type.indexOf('casewise:BusinessProcess') !== -1) { //GREY
+      //option a: set the tab fill as white and the label background fill as grey
+      //graph.setStyle(group, grey_group_topwhite)
+      //graph.addLabel({owner: group, text: groupData.label, style: white_on_grey_label})
+      //option b: make the tab white and the text black or grey
+      graph.setStyle(group, grey_group_topwhite)
+      graph.addLabel({owner: group, text: groupData.label, style: grey_on_white_label})
+      //option c: move the tab on the left
+      //graph.setStyle(group, grey_group_leftgrey)
+      //graph.addLabel({owner: group, text: groupData.label, style: white_on_grey_label})
+
+    }
+    else if (groupData.type.indexOf('eim:App_Instance')!== -1) { //BLUE
+      graph.setStyle(group, blue_group)
+      graph.addLabel({owner: group, text: groupData.label, style: white_label})
+    }
+    else if (groupData.type.indexOf('collibra:Report') !== -1) { //RED
+      graph.setStyle(group, red_group)
+      graph.addLabel({owner: group, text: groupData.label, style: white_label})
+    }
+    else if(groupData.type.indexOf('collibra:BusinessDataSet') !== -1) { //WHITE
+      graph.setStyle(group, white_group)
+      graph.addLabel({owner: group, text: groupData.label, style: grey_label})
+    }
+    groups[groupData.id] = group
+  })
+
+  // Iterate the node data and create the according nodes.
+  nodesData.graph.forEach((nodeData: any): void => {
+    const node = graph.createNode({
+      labels: nodeData.label != null ? [nodeData.label] : [],
+      tag: nodeData
+    })
+    // Set style, based on the node type
+    if (nodeData.type.indexOf('collibra:BusinessDataElement') !== -1) {
+      graph.setStyle(node, grey_node)
+    }
+    else if (nodeData.type.indexOf('collibra:ReportDataElement') !== -1) {
+      graph.setStyle(node, white_node)
+    }
+    nodes[nodeData.id] = node
+  })
+
+  // Set the parent groups after all nodes/groups are created.
+  graph.nodes.forEach((node: INode): void => {
+    if (node.tag.group) {
+      graph.setParent(node, groups[node.tag.group])
+    }
+  })
+
+  // Iterate the edge data and create the according edges.
+  edgesData.results.bindings.forEach((edgeData: any): void => {
+    // Note that nodes and groups need to have disjoint sets of ids, otherwise it is impossible to determine
+    // which node is the correct source/target.
+    graph.createEdge({
+      source: nodes[edgeData.from.value] || groups[edgeData.from.value],
+      target: nodes[edgeData.to.value] || groups[edgeData.to.value],
+      labels: edgeData.label != null ? [edgeData.label] : [],
+      tag: edgeData
+    })
+  })
+  Class.ensure(LayoutExecutor);
+  }
+
+  function buildGraph(graph: IGraph, graphData: any): void {
+    // Store groups and nodes to be accessible by their IDs.
+    // It will be easier to assign them as parents or connect them with edges afterwards.
+    const groups: {
+      [id: string]: INode
+    } = {}
+    const nodes: {
+      [id: string]: INode
+    } = {}
+  
+      // Set the styles
+      const grey_group = graph.groupNodeDefaults.style.clone() as GroupNodeStyle
+      grey_group.contentAreaFill = 'white'
+      grey_group.tabFill = 'grey'
+  
+      const red_group = graph.groupNodeDefaults.style.clone() as GroupNodeStyle
+      red_group.contentAreaFill = '#e02020'//red
+      red_group.tabFill = '#e02020' //red
+  
+      const blue_group = graph.groupNodeDefaults.style.clone() as GroupNodeStyle
+      blue_group.contentAreaFill = '#fff' //blue
+      blue_group.tabFill = '#fff' //blue
+  
+      const grey_node = graph.nodeDefaults.style.clone() as RectangleNodeStyle
+      grey_node.fill = '#d0d0d0' //grey
+  
+      const white_node = graph.nodeDefaults.style.clone() as RectangleNodeStyle
+      white_node.fill = 'white'
+
+      const white_label = graph.groupNodeDefaults.labels.style.clone() as DefaultLabelStyle
+      white_label.textFill = 'white' //hereee
+  
   
     // Iterate the group data and create the according group nodes.
-    groupsData.graph.forEach((groupData: any): void => {
-      if(groupData.tag.indexOf('casewise:BusinessProcess') !== -1) {
-      groups[groupData.id] = graph.createGroupNode({
+    graphData.groupsSource.forEach((groupData: any): void => {
+      const group = graph.createGroupNode({
         labels: groupData.label != null ? [groupData.label] : [],
-        // layout: groupData.layout,
-        tag: groupData,
-        style: 
-        new GroupNodeStyle({
-            cornerRadius: 0,
-            tabPosition: 'top',
-            drawShadow: false,
-            contentAreaFill: 'white',
-            tabFill: 'grey',
-            tabHeight: 25,
-            //contentAreaInsets: [30,30]
-          })
+        tag: groupData
       })
-    
-    } else if(groupData.tag.indexOf('collibra:Report') !== -1) {
-        groups[groupData.id] = graph.createGroupNode({
-          labels: groupData.label != null ? [groupData.label] : [],
-          // layout: groupData.layout,
-          tag: groupData,
-          style: new GroupNodeStyle({
-              cornerRadius: 0,
-              tabPosition: 'top',
-              drawShadow: false,
-              contentAreaFill: '#e02020', //red
-              tabFill: '#e02020',
-              tabHeight: 25,
-              //contentAreaInsets: [10,10]
-            })
-        }
-      )} else if(groupData.tag.indexOf('collibra:BusinessDataSet') !== -1) {
-        groups[groupData.id] = graph.createGroupNode({
-          labels: groupData.label != null ? [groupData.label] : [],
-          // layout: groupData.layout,
-          tag: groupData,
-          style: new GroupNodeStyle({
-              cornerRadius: 0,
-              tabPosition: 'top',
-              drawShadow: false,
-              contentAreaFill: '#fff',
-              tabFill: '#fff',
-              tabHeight: 25,
-              //contentAreaInsets: [10,10]
-            })
-        }
-      )
+      // Set style, based on the node type
+      if (groupData.type.indexOf('casewise:BusinessProcess') !== -1) {
+        graph.setStyle(group, grey_group)
+        //graph.groupNodeDefaults.labels.style = white_label //this changes them all
       }
-      else {
-        groups[groupData.id] = graph.createGroupNode({
-          labels: groupData.label != null ? [groupData.label] : [],
-          // layout: groupData.layout,
-          tag: groupData
-      })
+      else if (groupData.type.indexOf('collibra:Report') !== -1) {
+        graph.setStyle(group, red_group)
       }
+      else if(groupData.type.indexOf('collibra:BusinessDataSet') !== -1) {
+        graph.setStyle(group, blue_group)
+      }
+      groups[groupData.id] = group
     })
+
   
     // Iterate the node data and create the according nodes.
-    nodesData.graph.forEach((nodeData: any): void => {
+    graphData.nodesSource.forEach((nodeData: any): void => {
       const node = graph.createNode({
         labels: nodeData.label != null ? [nodeData.label] : [],
-        // layout: nodeData.layout,
         tag: nodeData
       })
-      if (nodeData.tag.indexOf('collibra:BusinessDataElement') !== -1) {
-        // If the node data specifies an individual fill color, adjust the style.
-        const nodeStyle = graph.nodeDefaults.style.clone() as RectangleNodeStyle
-        nodeStyle.fill = '#d0d0d0'
-        graph.setStyle(node, nodeStyle)
+      // Set style, based on the node type
+      if (nodeData.type.indexOf('collibra:BusinessDataElement') !== -1) {
+        graph.setStyle(node, grey_node)
+      }
+      else if (nodeData.type.indexOf('collibra:ReportDataElement') !== -1) {
+        graph.setStyle(node, white_node)
       }
       nodes[nodeData.id] = node
     })
@@ -233,7 +379,7 @@ function buildGraph_fromSparql(graph: IGraph, nodesData: any, groupsData: any, e
     })
   
     // Iterate the edge data and create the according edges.
-    edgesData.edgesSource.forEach((edgeData: any): void => {  //change this part - todo
+    graphData.edgesSource.forEach((edgeData: any): void => {
       // Note that nodes and groups need to have disjoint sets of ids, otherwise it is impossible to determine
       // which node is the correct source/target.
       graph.createEdge({
@@ -262,180 +408,63 @@ function buildGraph_fromSparql(graph: IGraph, nodesData: any, groupsData: any, e
   
     Class.ensure(LayoutExecutor);
   }
-
-
-
-function buildGraph(graph: IGraph, graphData: any): void {
-  // Store groups and nodes to be accessible by their IDs.
-  // It will be easier to assign them as parents or connect them with edges afterwards.
-  const groups: {
-    [id: string]: INode
-  } = {}
-  const nodes: {
-    [id: string]: INode
-  } = {}
-
-  // Iterate the group data and create the according group nodes.
-  graphData.groupsSource.forEach((groupData: any): void => {
-    if(groupData.tag.indexOf('casewise:BusinessProcess') !== -1) {
-    groups[groupData.id] = graph.createGroupNode({
-      labels: groupData.label != null ? [groupData.label] : [],
-      // layout: groupData.layout,
-      tag: groupData,
-      style: 
-      new GroupNodeStyle({
-          cornerRadius: 0,
-          tabPosition: 'top',
-          drawShadow: false,
-          contentAreaFill: 'white',
-          tabFill: 'grey',
-          tabHeight: 25,
-          //contentAreaInsets: [30,30]
-        })
-    })
-  
-  } else if(groupData.tag.indexOf('collibra:Report') !== -1) {
-      groups[groupData.id] = graph.createGroupNode({
-        labels: groupData.label != null ? [groupData.label] : [],
-        // layout: groupData.layout,
-        tag: groupData,
-        style: new GroupNodeStyle({
-            cornerRadius: 0,
-            tabPosition: 'top',
-            drawShadow: false,
-            contentAreaFill: '#e02020', //red
-            tabFill: '#e02020',
-            tabHeight: 25,
-            //contentAreaInsets: [10,10]
-          })
-      }
-    )} else if(groupData.tag.indexOf('collibra:BusinessDataSet') !== -1) {
-      groups[groupData.id] = graph.createGroupNode({
-        labels: groupData.label != null ? [groupData.label] : [],
-        // layout: groupData.layout,
-        tag: groupData,
-        style: new GroupNodeStyle({
-            cornerRadius: 0,
-            tabPosition: 'top',
-            drawShadow: false,
-            contentAreaFill: '#fff',
-            tabFill: '#fff',
-            tabHeight: 25,
-            //contentAreaInsets: [10,10]
-          })
-      }
-    )
-    }
-    else {
-      groups[groupData.id] = graph.createGroupNode({
-        labels: groupData.label != null ? [groupData.label] : [],
-        // layout: groupData.layout,
-        tag: groupData
-    })
-    }
-  })
-
-  // Iterate the node data and create the according nodes.
-  graphData.nodesSource.forEach((nodeData: any): void => {
-    const node = graph.createNode({
-      labels: nodeData.label != null ? [nodeData.label] : [],
-      // layout: nodeData.layout,
-      tag: nodeData,
-    })
-    // If the node data specifies an individual fill color, adjust the style.
-    if (nodeData.tag.indexOf('collibra:BusinessDataElement') !== -1) {
-      const nodeStyle = graph.nodeDefaults.style.clone() as RectangleNodeStyle
-      nodeStyle.fill = '#d0d0d0' //grey
-      graph.setStyle(node, nodeStyle)
-    }
-    else if (nodeData.tag.indexOf('collibra:ReportDataElement') !== -1) {
-      const nodeStyle = graph.nodeDefaults.style.clone() as RectangleNodeStyle
-      nodeStyle.fill = 'white'
-      graph.setStyle(node, nodeStyle)
-    }
-    nodes[nodeData.id] = node
-  })
-
-  // Set the parent groups after all nodes/groups are created.
-  graph.nodes.forEach((node: INode): void => {
-    if (node.tag.group) {
-      graph.setParent(node, groups[node.tag.group])
-    }
-  })
-
-  // Iterate the edge data and create the according edges.
-  graphData.edgesSource.forEach((edgeData: any): void => {
-    // Note that nodes and groups need to have disjoint sets of ids, otherwise it is impossible to determine
-    // which node is the correct source/target.
-    graph.createEdge({
-      source: nodes[edgeData.from] || groups[edgeData.from],
-      target: nodes[edgeData.to] || groups[edgeData.to],
-      labels: edgeData.label != null ? [edgeData.label] : [],
-      tag: edgeData
-    })
-  })
-
-  // If given, apply the edge layout information
-  graph.edges.forEach((edge: IEdge): void => {
-    const edgeData = edge.tag
-    if (edgeData.sourcePort) {
-      graph.setPortLocation(edge.sourcePort!, Point.from(edgeData.sourcePort))
-    }
-    if (edgeData.targetPort) {
-      graph.setPortLocation(edge.targetPort!, Point.from(edgeData.targetPort))
-    }
-    if (edgeData.bends) {
-      edgeData.bends.forEach((bendLocation: Point): void => {
-        graph.addBend(edge, bendLocation)
-      })
-    }
-  })
-
-  Class.ensure(LayoutExecutor);
-}
+//  ------------------------------------------------------  // 
 
 /**
  * Initializes the defaults for the styling in this tutorial.
  *
  * @param graph The graph.
  */
-function initTutorialDefaults(graph: IGraph): void {
+
+
+//  ------------------------------------------------------  // 
+/**
+ * Initializes the defaults for the styling in this tutorial.
+ *
+ * @param graph The graph.
+ */
+ function initTutorialDefaults(graph: IGraph): void {
   // set styles that are the same for all tutorials
   initDemoStyles(graph)
-  
+
   // GROUP NODES DEFAULT
   graph.groupNodeDefaults.style = new GroupNodeStyle({
     cornerRadius: 0,
-    tabPosition: 'top',
+    tabPosition: 'top', //left is interesting as well
     drawShadow: false,
     contentAreaFill: '#0091ff',
     tabFill: '#0091ff',
-    tabHeight: 25,
-    //contentAreaInsets: [1000,10000]
+    tabHeight: 90, //sos - this affects the wrapping
+    //tabInset: 6 //this affects the wrapping
+    //contentAreaInsets: [30,30]
   })
-
+  
   // GROUP NODES LABELS DEFAULT
   graph.groupNodeDefaults.labels.style = new DefaultLabelStyle({
     horizontalTextAlignment: 'left',
     textFill: 'black',
     textSize: 15,
-    wrapping: 'word-ellipsis',
+    wrapping: 'word-ellipsis', //TextWrapping.WORD_ELLIPSIS, 
     shape: 'rectangle',
-    //minimumSize: [10,10]
+    minimumSize: [80,10],
     //maximumSize: [10, 10000], //width,height
-    //textWrappingShape: 'rectangle'
+    textWrappingShape: 'rectangle',
+    insets: [5, 8, 5, 8] //this affects the wrapping
+    //The insets ensure that the upper area containing the handle is not overlapped by the content of the group.
   })
-  graph.groupNodeDefaults.labels.layoutParameter = new GroupNodeLabelModel().createDefaultParameter() //Creates a parameter that places labels inside the tab area of a GroupNodeStyle instance.
 
-  // NODES DEFAULT
-  // set sizes and locations specific for this tutorial
+  graph.groupNodeDefaults.labels.layoutParameter = new GroupNodeLabelModel().createDefaultParameter() //Creates a parameter that places labels inside the tab area of a GroupNodeStyle instance.
+  
+  // set sizes for nodes and groups
   graph.nodeDefaults.size = new Size(100, 80)
+  graph.groupNodeDefaults.size = new Size(130, 150)
 
   graph.edgeDefaults.labels.layoutParameter = new EdgePathLabelModel({
-    distance: 5,
+    distance: 10,
     autoRotation: true
   }).createRatioParameter({ sideOfEdge: EdgeSides.BELOW_EDGE })
 }
+//  ------------------------------------------------------  // 
 
 /**
  * Binds the various commands available in yFiles for HTML to the buttons in the tutorial's toolbar.

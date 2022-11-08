@@ -1,0 +1,24 @@
+{ "head": {
+    "vars": [ "from" , "to" ]
+  } ,
+  "results": {
+    "bindings": [
+      { 
+        "from": { "type": "uri" , "value": "http://www.hsbc.com/row/468c74f4498851fbdc2349c8c15faee4f1d804df0175bdbd89d7891eb9d1e465" } ,
+        "to": { "type": "uri" , "value": "http://www.hsbc.com/row/7ad14091d56940cf38e01c3ab6f4f05b8add7cfa86c23fd4eda67735d0b832c3" }
+      } ,
+      { 
+        "from": { "type": "uri" , "value": "http://www.hsbc.com/row/abe24096bcc8ef15d1807d22c1ff4eae57fb81838392576d05e36a84ad2630be" } ,
+        "to": { "type": "uri" , "value": "http://www.hsbc.com/row/95a38b85133ec4ee027d914ce6df5c33d983c57324097020870f31c658ce4db8" }
+      } ,
+      { 
+        "from": { "type": "uri" , "value": "http://www.hsbc.com/row/7ad14091d56940cf38e01c3ab6f4f05b8add7cfa86c23fd4eda67735d0b832c3" } ,
+        "to": { "type": "uri" , "value": "http://www.hsbc.com/row/9b9f1c5fb9d809cfd494594aaf78660cae5831747cb36312c3c3a2c4a7a2e61a" }
+      } ,
+      { 
+        "from": { "type": "uri" , "value": "http://www.hsbc.com/row/95a38b85133ec4ee027d914ce6df5c33d983c57324097020870f31c658ce4db8" } ,
+        "to": { "type": "uri" , "value": "http://www.hsbc.com/row/9b9f1c5fb9d809cfd494594aaf78660cae5831747cb36312c3c3a2c4a7a2e61a" }
+      }
+    ]
+  }
+}

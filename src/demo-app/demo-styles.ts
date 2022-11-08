@@ -184,7 +184,7 @@ export function createDemoNodeLabelStyle(
   labelStyle.verticalTextAlignment = VerticalTextAlignment.CENTER
   labelStyle.horizontalTextAlignment = HorizontalTextAlignment.CENTER
   labelStyle.insets = new Insets(4, 2, 4, 1)
-  labelStyle.wrapping = 'word'
+  labelStyle.wrapping = 'word-ellipsis' //changed that
   labelStyle.maximumSize = new Size(80,80)
   return labelStyle
 }
@@ -215,7 +215,8 @@ export function createDemoGroupLabelStyle(
     verticalTextAlignment: 'center',
     horizontalTextAlignment: 'left',
     clipText: false,
-    wrapping: 'word',
+    wrapping: 'word-ellipsis', //changed that
+    maximumSize: [80,80],//added that
     textFill: colorSets[colorSetName].nodeLabelFill
   })
 }
