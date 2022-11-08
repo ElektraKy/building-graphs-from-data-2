@@ -127,6 +127,7 @@ async function run(): Promise<void> {
     customLayout.considerNodeLabels = true
     customLayout.automaticEdgeGrouping = true
     //customLayout.orthogonalRouting = true
+    customLayout.backLoopRouting = true
   
     graphComponent.morphLayout(customLayout, '1s');
 
