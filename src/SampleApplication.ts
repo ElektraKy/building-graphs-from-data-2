@@ -33,7 +33,7 @@ import {
   EdgePathLabelModel,
   EdgeSides,
   GraphComponent,
-  //GraphEditorInputMode,
+  GraphEditorInputMode,
   GroupNodeLabelModel,
   GroupNodeStyle,
   ICommand,
@@ -82,11 +82,24 @@ async function run(): Promise<void> {
   //determine the mode for the user (interactions allowed)
   //see here https://docs.yworks.com/yfiles-html/api/GraphEditorInputMode.html
   //and here https://docs.yworks.com/yfiles-html/dguide/interaction/interaction-support.html
-  //graphComponent.inputMode = new GraphEditorInputMode({
-  //  allowGroupingOperations: false
-  //})
+  graphComponent.inputMode = new GraphEditorInputMode({
+    //create elements
+    allowCreateNode: false,
+    allowCreateEdge: false,
+    allowCreateBend: true, //when moving nodes, bends can become really messy - so it would be good to allow users to modify them
+    allowAddLabel: false,
+    //delete elements
+    deletableItems: 'none',
+    //edit labels
+    allowEditLabelOnDoubleClick: false, 
+    allowEditLabel: false,
+    //other
+    allowGroupingOperations: false,
+    allowAdjustGroupNodeSize: false, //doesn't work - I am still able to resize groups and nodes
+    allowClipboardOperations: false
+  })
   
-  graphComponent.inputMode = new GraphViewerInputMode() 
+  //graphComponent.inputMode = new GraphViewerInputMode() 
 
   // configures default styles for newly created graph elements
   initTutorialDefaults(graphComponent.graph)
