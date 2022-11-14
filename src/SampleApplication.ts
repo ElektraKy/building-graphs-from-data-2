@@ -55,6 +55,10 @@ import {
   LabelStyleBase,
   TemplateLabelStyle,
   LabelsSource,
+  OrthogonalEdgeEditingContext,
+  GraphSnapContext,
+  GraphItemTypes,
+  //FoldingManager,
   //INodeSizeConstraintProvider,
   //ILabel,
   //LabelAngleOnRightSideOffsets,
@@ -86,16 +90,28 @@ async function run(): Promise<void> {
     //create elements
     allowCreateNode: false,
     allowCreateEdge: false,
-    allowCreateBend: true, //when moving nodes, bends can become really messy - so it would be good to allow users to modify them
+    allowCreateBend: false, //when moving nodes, bends can become really messy - so it would be good to allow users to modify them
     allowAddLabel: false,
     //delete elements
-    deletableItems: 'none',
+    deletableItems: GraphItemTypes.NONE, //'none',
     //edit labels
     allowEditLabelOnDoubleClick: false, 
     allowEditLabel: false,
+    //enable orthogonal edge editing
+    orthogonalEdgeEditingContext: new OrthogonalEdgeEditingContext(), // when nodes are moved, edges bend based on orthogonal layout
+    //enable snapping for edges only -- this adds the blue lines and 'X's when edges are aligned
+    //snapContext: new GraphSnapContext({
+    //  collectNodeSnapLines: false,
+    //  collectNodePairCenterSnapLines: false,
+    //  collectNodePairSnapLines: false,
+    //  collectNodePairSegmentSnapLines: false,
+    //  collectNodeSizes: false,
+    //  snapNodesToSnapLines: false,
+    //  snapOrthogonalMovement: false
+    //}),
     //other
     allowGroupingOperations: false,
-    allowAdjustGroupNodeSize: false, //doesn't work - I am still able to resize groups and nodes
+    allowAdjustGroupNodeSize: false, //doesn't work - still able to resize groups and nodes
     allowClipboardOperations: false
   })
   
@@ -111,7 +127,7 @@ async function run(): Promise<void> {
     //const nodesData1 = await loadJSON('./nodesource.json')
     //const groupsData1 = await loadJSON('./groupsource.json')
     //const edgesData = await loadJSON('./edgesource.json')
-    const nodesData1 = await loadJSON('./nodes3_new.json')
+    const nodesData1 = await loadJSON('./nodes3_new_with_RDE.json')
     const groupsData1 = await loadJSON('./groups3.json')
     const edgesData = await loadJSON('./edges3.json')
     // replace all @id with id and first @graph instance with graph
@@ -129,36 +145,56 @@ async function run(): Promise<void> {
     //uildGraph(graphComponent.graph, graphData) //use this for a single json
     // *************END OF OPTION 2**********
     
+
+
+
+
+
     graphComponent.fitGraphBounds()
 
     // APPLY THE LAYOUT
     const customLayout = new HierarchicLayout()
-    // Use left-to-right main layout direction.
     customLayout.layoutOrientation = LayoutOrientation.LEFT_TO_RIGHT
     customLayout.gridSpacing = 25 //this affects the distance between groups - subgroups
     customLayout.minimumLayerDistance = 130
     customLayout.considerNodeLabels = true
     customLayout.automaticEdgeGrouping = true
-    //customLayout.orthogonalRouting = true
+    customLayout.orthogonalRouting =  true //choose edge type of original layout //todo-fix the original edge style with moving nodes
     customLayout.backLoopRouting = true
   
     graphComponent.morphLayout(customLayout, '1s');
+
+    
+    
+    //to allow edge bends automatically adjust when moving nodes/groups
+    //registerOrthogonalEdgeHelperDecorators(graphComponent.graph)
 
     // LOAD INFORMATION FOR CLICKABLE ITEMS
     (graphComponent.inputMode as GraphViewerInputMode)!.addItemClickedListener(
       (sender, args): void => {
         const node = args.item.tag
         if (node.type.indexOf('collibra:BusinessDataElement') !== -1)
-          {console.log("Node clicked", sender, " args", node.label, node.type, node.bde_prop1, node.bde_prop2)}
+          {console.log("Node clicked", sender, "Label:", node.label, '\n', "Type:", node.type, '\n', "Description:", node.dataElementDescription)}
         else if (node.type.indexOf('collibra:ReportDataElement') !== -1)
-          {console.log("Node clicked", sender, " args", node.label, node.type, node.rde_prop1, node.rde_prop2)}
-        //do the same for group nodes - todo
+          {console.log("Node clicked", sender, "Label:", node.label, '\n', "Type:", node.type, '\n', "Description:", node.dataElementDescription)}
+        else if (node.type.indexOf('casewise:BusinessProcess') !== -1)
+          {console.log("Node clicked", sender, "Label:", node.label, '\n', "Type:", node.type, '\n', "Description:", node.businessProcessDescription, '\n', "Owner:", node.businessProcessOwner, '\n', "Scope:", node.scope)}
+        else if (node.type.indexOf('eim:App_Instance') !== -1)
+          {console.log("Node clicked", sender, "Label:", node.label, '\n', "Type:", node.type, '\n', "Description:", node.AppDescription, '\n', "Owner:", node.AppBusinessOwner)}
+        else if (node.type.indexOf('collibra:BusinessDataSet') !== -1)
+          {console.log("Node clicked", sender, "Label:", node.label, '\n', "Type:", node.type, '\n', "Description:", node.databaseDescription)}
+        else if (node.type.indexOf('collibra:Report') !== -1)
+          {console.log("Node clicked", sender, "Label:", node.label, '\n', "Type:", node.type, '\n', "Description:", node.reportDescription, '\n', "Owner:", node.reportOwner)}
       // this.setState({ showFilters: true})
       // this.onNodeClicked(args.item);
     })
 
+
+
+
+
     // Finally, enable the undo engine. This prevents undoing of the graph creation
-    graphComponent.graph.undoEngineEnabled = true
+    //graphComponent.graph.undoEngineEnabled = true
   } catch (e) {
     alert(e)
   }

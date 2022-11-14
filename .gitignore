@@ -7,4 +7,6 @@ src/edgesource_old.json
 src/nodes3_new_with_RDE.json
 src/SampleApplication_old_version.ts
 src/SampleApplication_original.ts
+src/SampleApplicationWithFolding.ts
 src/initTutorialDefaults-testing.ts
+src/properties.txt
