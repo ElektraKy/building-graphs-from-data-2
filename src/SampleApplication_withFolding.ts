@@ -42,8 +42,6 @@ import {
   IGraph,
   INode,
   //IPoint,
-  IHandle,
-  RectangleHandle,
   License,
   Point,
   RectangleNodeStyle,
@@ -69,29 +67,14 @@ import {
   FoldingManager,
   MergingFoldingEdgeConverter,
   PolylineEdgeStyle,
-  MutableRectangle,
-  HandleInputMode,
-  HandlePositions,
   //ArrowEdgeStyle,
   HierarchicLayout,
   HierarchicLayoutRoutingStyle,
   HierarchicLayoutEdgeRoutingStyle,
   RecursiveEdgeStyle,
-  NodeReshapeHandleProvider,
   BridgeEdgeStyle,
-  Insets,
-  Rect,
-  SvgExport,
   //PanelNodeStyle,
   CollapsibleNodeStyleDecorator,
-  RectangleIndicatorInstaller,
-  GeneralPath,
-  IReshapeHandler,
-  IHitTestable,
-  GraphInputMode,
-  ObservableCollection,
-  EventRecognizers,
-  MoveInputMode,
   //GraphBuilder,
   //TemporaryGroupNodeInsertionData,
  //NodeStyleDecorationInstaller
@@ -101,81 +84,46 @@ import {
   //LabelDefaults
 } from 'yfiles'
 import HierarchicGrouping from './hierarchicGrouping'
-import { bindAction, bindCommand, bindChangeListener, showApp, addClass, removeClass } from './demo-app/demo-app'
+import { bindAction, bindCommand, showApp } from './demo-app/demo-app'
 import { initDemoStyles, DemoStyleOverviewPaintable } from './demo-app/demo-styles'
-import FileSaveSupport  from './utils/FileSaveSupport'
-
-import PositionHandler from './PositionHandler'
 
 import { fetchLicense } from './demo-app/fetch-license'
-import ServerSidePdfExport from './ServerSidePdfExport'
-import ClientSidePdfExport from './ClientSidePdfExport'
-import { BrowserDetection } from './utils/BrowserDetection'
 //import { ViewBridgeLayout } from 'yfiles/view-layout-bridge'
 //import {HierarchicLayout} from 'yfiles/layout-hierarchic'
 
 
 let graphComponent: GraphComponent = null!
 
-export enum PaperSize {
-    A3 = 'A3',
-    A4 = 'A4',
-    A5 = 'A5',
-    A6 = 'A6',
-    LETTER = 'Letter',
-    AUTO = 'Auto'
-  }
-
-/** Server URLs for server-side export.*/
- const NODE_SERVER_URL = 'http://localhost:8080'
- const JAVA_SERVLET_URL = 'http://localhost:8080/BatikServlet/BatikServlet'
- 
-/** Handles the client-sided and server-sided PDF export.*/
-const clientSidePdfExport = new ClientSidePdfExport()
-const serverSidePdfExport = new ServerSidePdfExport()
-
-/** The area that will be exported.*/
- let exportRect: MutableRectangle
-
-
+/**
+ * Bootstraps the demo.
+ */
 async function run(): Promise<void> {
   License.value = await fetchLicense()
-  if (window.location.protocol === 'file:') {
-    alert(
-      'This demo features image export with inlined images. ' +
-        'Due to the browsers security settings, images can not be inlined if the demo is started from the file system. ' +
-        'Please start the demo from a web server.'
-    )
-  }
   graphComponent = new GraphComponent('graphComponent')
   //applyDemoTheme(graphComponent)
-
   const overviewComponent = new GraphOverviewComponent('overviewComponent')
   overviewComponent.graphComponent = graphComponent
-
-
   // initialize input mode
 
-  //graphComponent.inputMode = new MoveViewportInputMode() // for panning
+  graphComponent.inputMode = new MoveViewportInputMode()
   graphComponent.inputMode = new GraphViewerInputMode({clickableItems: GraphItemTypes.NODE})
-
+  //const moveViewportInputMode = mode.moveViewportInputMode
   //determine the mode for the user (interactions allowed)
   //see here https://docs.yworks.com/yfiles-html/api/GraphEditorInputMode.html
   //and here https://docs.yworks.com/yfiles-html/dguide/interaction/interaction-support.html
-
-  let geim2 = new GraphEditorInputMode({
+  //graphComponent.inputMode = new GraphEditorInputMode({
     //create elements
-    allowCreateNode: false,
-    allowCreateEdge: false,
-    allowCreateBend: false, //when moving nodes, bends can become really messy - so it would be good to allow users to modify them
-    allowAddLabel: false,
+    //allowCreateNode: false,
+    //allowCreateEdge: false,
+    //allowCreateBend: false, //when moving nodes, bends can become really messy - so it would be good to allow users to modify them
+    //allowAddLabel: false,
     //delete elements
-    deletableItems: GraphItemTypes.NONE, //'none',
+    //deletableItems: GraphItemTypes.NONE, //'none',
     //edit labels
-    allowEditLabelOnDoubleClick: false, 
-    allowEditLabel: false,
+    //allowEditLabelOnDoubleClick: false, 
+    //allowEditLabel: false,
     //enable orthogonal edge editing
-    orthogonalEdgeEditingContext: new OrthogonalEdgeEditingContext(), // when nodes are moved, edges bend based on orthogonal layout
+    //orthogonalEdgeEditingContext: new OrthogonalEdgeEditingContext(), // when nodes are moved, edges bend based on orthogonal layout
     //enable snapping for edges only -- this adds the blue lines and 'X's when edges are aligned
     //snapContext: new GraphSnapContext({
     //  collectNodeSnapLines: false,
@@ -187,22 +135,15 @@ async function run(): Promise<void> {
     //  snapOrthogonalMovement: false
     //}),
     //other
-    allowGroupingOperations: false,
-    allowAdjustGroupNodeSize: false, //doesn't work - I am still able to resize groups and nodes
-    allowClipboardOperations: false
-  })
-  //graphComponent.inputMode = geim2
-  //graphComponent.inputMode = new GraphEditorInputMode()
+    //allowGroupingOperations: false,
+    //allowAdjustGroupNodeSize: false, //doesn't work - I am still able to resize groups and nodes
+    //allowClipboardOperations: false
+  //})
 
-  //initializeInteraction(graphComponent)
-  //retainAspectRatio(graphComponent.graph)
-  initializeInteraction(graphComponent)
-  retainAspectRatio(graphComponent.graph)
-
-
+  
   try{
   // set up the HierarchicGrouping
-  new HierarchicGrouping(graphComponent)
+  new HierarchicGrouping(graphComponent) //sosara
   }
   catch (e) {
     alert(e)
@@ -325,7 +266,7 @@ async function run(): Promise<void> {
   try{
   
   // LOAD INFORMATION FOR CLICKABLE ITEMS
-  (graphComponent.inputMode as GraphViewerInputMode)!.addItemClickedListener(
+  (graphComponent.inputMode as GraphViewerInputMode)!.addItemDoubleClickedListener(
     (sender, args): void => {
       const node = args.item.tag
       
@@ -354,20 +295,8 @@ async function run(): Promise<void> {
   // enable undo after the initial graph was populated since we don't want to allow undoing that
   //foldingView.manager.masterGraph.undoEngineEnabled = true
 
-
-  // disable client-side export button in IE9 and hide the save buttons
-  const ieVersion = BrowserDetection.ieVersion
-  if (ieVersion > 0 && ieVersion <= 9) {
-    disableClientSaveButton()
-  }
-
-  // disable server-side export in IE9 due to limited XHR CORS support
-  if (!ieVersion || ieVersion > 9) {
-    enableServerSideExportButtons()
-  }
-
   // bind the buttons to their commands
-  registerCommands(graphComponent)
+  registerCommands()
 
   // initialize the application's CSS and JavaScript for the description
   //showApp(graphComponent)
@@ -553,7 +482,7 @@ function buildGraph_fromSparql(graph: IGraph, nodesData: any, groupsData: any, e
   Class.ensure(LayoutExecutor);
   }
 
-function buildGraph(graph: IGraph, graphData: any): void {
+  function buildGraph(graph: IGraph, graphData: any): void {
     // Store groups and nodes to be accessible by their IDs.
     // It will be easier to assign them as parents or connect them with edges afterwards.
     const groups: {
@@ -643,7 +572,7 @@ function buildGraph(graph: IGraph, graphData: any): void {
   
   
     Class.ensure(LayoutExecutor);
-}
+  }
 //  ------------------------------------------------------  // 
 
 /**
@@ -724,7 +653,16 @@ function centerAtTop(): void {
 
 //  ------------------------------------------------------  // 
 
-
+/**
+ * Binds the various commands available in yFiles for HTML to the buttons in the tutorial's toolbar.
+ */
+function registerCommands(): void {
+  bindCommand("button[data-command='ZoomIn']", ICommand.INCREASE_ZOOM, graphComponent)
+  bindCommand("button[data-command='ZoomOut']", ICommand.DECREASE_ZOOM, graphComponent)
+  bindCommand("button[data-command='ZoomOriginal']", ICommand.ZOOM, graphComponent, 1.0)
+  //bindCommand("button[data-command='FitContent']", ICommand.FIT_GRAPH_BOUNDS, graphComponent)
+  bindAction("button[data-command='FitContent']", centerAtTop)
+}
 
 /**
  * Returns a promise that resolves when the JSON file is loaded.
@@ -741,303 +679,6 @@ async function loadJSON(url: string): Promise<JSON> {
   const response = await fetch(url)
   return response.json()
 }
-
-/**
- * Initializes user interaction.
- * Aside from basic editing, this demo provides a visual marker (the 'export rectangle') that
- * determines the area that will be exported. Users may move and resize the marker with their mouse.
- * @param graphComponent The demo's main graph view.
- */
- function initializeInteraction(graphComponent: GraphComponent): void {
-    const geim = new GraphViewerInputMode()
-  
-    // create the model for the export rectangle, ...
-    exportRect = new MutableRectangle(graphComponent.viewPoint.x, graphComponent.viewPoint.y, 100, 100) //the initial size ( canvas horizontal position, canvas vertical position, width, height)
-    console.log('viewpoint', graphComponent.viewPoint)
-    // ... visualize it in the canvas, ...
-    const installer = new RectangleIndicatorInstaller(exportRect)
-    installer.addCanvasObject(
-      graphComponent.createRenderContext(),
-      graphComponent.backgroundGroup,
-      exportRect
-    )
-    // ... and make it movable and resizable
-    addExportRectInputModes(geim)
-  
-    // assign the configured input mode to the GraphComponent
-    graphComponent.inputMode = geim
-  }
-  
-  /**
- * Adds the view modes that handle moving and resizing of the export rectangle.
- * @param inputMode The demo's main input mode.
- */
-function addExportRectInputModes(inputMode: GraphInputMode): void {
-    // create a mode that deals with resizing the export rectangle and ...
-    const exportHandleInputMode = new HandleInputMode({
-      // ensure that this mode takes precedence over most other modes
-      // i.e. resizing the export rectangle takes precedence over other interactive editing
-      priority: 1
-    })
-    // ... add it to the demo's main input mode
-    inputMode.add(exportHandleInputMode)
-  
-    // create handles for resizing the export rectangle and ...
-    const newDefaultCollectionModel = new ObservableCollection<IHandle>()
-    newDefaultCollectionModel.add(new RectangleHandle(HandlePositions.NORTH_EAST, exportRect))
-    newDefaultCollectionModel.add(new RectangleHandle(HandlePositions.NORTH_WEST, exportRect))
-    newDefaultCollectionModel.add(new RectangleHandle(HandlePositions.SOUTH_EAST, exportRect))
-    newDefaultCollectionModel.add(new RectangleHandle(HandlePositions.SOUTH_WEST, exportRect))
-    // ... add the handles to the input mode that is responsible for resizing the export rectangle
-    exportHandleInputMode.handles = newDefaultCollectionModel
-  
-    // create a mode that deals with moving the export rectangle and ...
-    const moveInputMode = new MoveInputMode({
-      // create a custom position handler that moves the export rectangle on mouse events
-      positionHandler: new PositionHandler(exportRect),
-      // create a hit testable that determines if a mouse event occurs 'on' the export rectangle
-      // and thus should be handled by this mode
-      hitTestable: IHitTestable.create((context, location) => {
-        const path = new GeneralPath(5)
-        path.appendRectangle(exportRect, false)
-        return path.pathContains(location, context.hitTestRadius + 3 / context.zoom)
-      }),
-      // ensure that this mode takes precedence over the move input mode used for regular graph
-      // elements
-      priority: 41
-    })
-  
-    // ... add it to the demo's main input mode
-    inputMode.add(moveInputMode)
-  }
-  
-  /**
-   * Configures node resize behavior to force resize operations to keep the aspect ratio of the
-   * respective nodes.
-   * @param graph The demo's graph.
-   */
-  function retainAspectRatio(graph: IGraph): void {
-    graph.decorator.nodeDecorator.reshapeHandleProviderDecorator.setFactory(node => {
-      const keepAspectRatio = new NodeReshapeHandleProvider(
-        node,
-        node.lookup(IReshapeHandler.$class) as IReshapeHandler,
-        HandlePositions.CORNERS
-      )
-      keepAspectRatio.ratioReshapeRecognizer = EventRecognizers.ALWAYS
-      return keepAspectRatio
-    })
-  }
-  
-
-  
-
-
-  /**
-   * Checks whether or not the given parameters are a valid input for export.
-   * @param scale The desired scale factor for the image export.
-   * @param margin The desired margins for the image export.
-   */
-  function checkInputValues(scale: number, margin: number): boolean {
-    if (isNaN(scale) || scale <= 0) {
-      alert('Scale must be a positive number.')
-      return false
-    }
-    if (isNaN(margin) || margin < 0) {
-      alert('Margin must be a non-negative number.')
-      return false
-    }
-    return true
-  }
-  
-  /**
-   * Requests a server-side export.
-   * @param svgElement The SVG document that is to be exported.
-   * @param size The size of the exported image.
-   * @param url The URL of the service that will convert the given SVG document to a PDF.
-   */
-  function requestServerExport(svgElement: Element, size: Size, url: string): any {
-    const svgString = SvgExport.exportSvgString(svgElement)
-    serverSidePdfExport.requestFile(url, 'pdf', svgString, size)
-    hidePopup()
-  }
-  
-  /**
-   * Shows the export dialog for the client-side graph exports.
-   * @param raw The raw PDF content that is written to a file.
-   * @param pdfUrl A data URI representation of the generated PDF that can be previewed.
-   */
-  function showClientExportDialog(raw: string, pdfUrl: string): void {
-    const pdfIframe = document.createElement('iframe')
-    pdfIframe.setAttribute('style', 'width: 99%; height: 99%')
-    pdfIframe.src = pdfUrl
-    const pdfContainerInner = document.getElementById('pdfContainerInner') as HTMLDivElement
-    pdfContainerInner.innerHTML = ''
-    pdfContainerInner.appendChild(pdfIframe)
-  
-    const saveButton = document.getElementById('clientPdfSaveButton') as HTMLButtonElement
-    const pdfButton = cloneAndReplace(saveButton)
-    pdfButton.addEventListener(
-      'click',
-      () => {
-        FileSaveSupport.save(raw, 'graph.pdf').catch(() => {
-          alert(
-            'Saving directly to the filesystem is not supported by this browser. Please use the server based export instead.'
-          )
-        })
-      },
-      false
-    )
-  
-    showPopup()
-  }
-  
-  /**
-   * Disables the client-side save button in IE9.
-   */
-  function disableClientSaveButton(): void {
-    ;(document.getElementById('ExportButton') as HTMLButtonElement).disabled = true
-    const clientSaveButton = document.getElementById('clientPdfSaveButton') as HTMLButtonElement
-    clientSaveButton.setAttribute('style', 'display: none')
-  }
-  
-  /**
-   * Enables server-side export buttons.
-   */
-  async function enableServerSideExportButtons(): Promise<void> {
-    // if a server is available, enable the server export button
-    const isAliveJava = await isServerAlive(JAVA_SERVLET_URL)
-    ;(document.getElementById('BatikServerExportButton') as HTMLButtonElement).disabled = !isAliveJava
-  
-    const isAliveNode = await isServerAlive(NODE_SERVER_URL)
-    ;(document.getElementById('NodeServerServerExportButton') as HTMLButtonElement).disabled =
-      !isAliveNode
-  }
-  
-  /**
-   * Checks if the server at the given URL is alive.
-   * @param url The URL of the service to check.
-   */
-  function isServerAlive(url: string): Promise<Response | boolean> {
-    const initObject = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'text/plain;charset=UTF-8'
-      },
-      body: 'isAlive',
-      mode: 'no-cors'
-    } as RequestInit
-  
-    return fetch(url, initObject).catch(() => Promise.resolve(false))
-  }
-  
-  /**
-   * Replaces the given element with a clone. This prevents adding multiple listeners to a button.
-   * @param element The element to replace.
-   */
-  function cloneAndReplace(element: HTMLElement): HTMLElement {
-    const clone = element.cloneNode(true) as HTMLElement
-    element.parentNode!.replaceChild(clone, element)
-    return clone
-  }
-  
-  /**
-   * Hides the export dialog.
-   */
-  function hidePopup(): void {
-    addClass(document.getElementById('popup')!, 'hidden')
-  }
-  
-  /**
-   * Shows the export dialog.
-   */
-  function showPopup(): void {
-    removeClass(document.getElementById('popup')!, 'hidden')
-  }
-  
-  /**
-   * Returns the chosen export paper size.
-   */
-  function getPaperSize(): PaperSize {
-    const inputPaperSize = document.getElementById('paperSize') as HTMLSelectElement
-    return PaperSize[inputPaperSize.value as keyof typeof PaperSize]
-  }
-  
-  /**
-   * Wires up the UI.
-   * @param graphComponent The demo's main graph view.
-   */
-  function registerCommands(graphComponent: GraphComponent): void {
-
-    bindCommand("button[data-command='ZoomIn']", ICommand.INCREASE_ZOOM, graphComponent)
-    bindCommand("button[data-command='ZoomOut']", ICommand.DECREASE_ZOOM, graphComponent)
-    //bindCommand("button[data-command='FitContent']", ICommand.FIT_GRAPH_BOUNDS, graphComponent)
-    bindCommand("button[data-command='ZoomOriginal']", ICommand.ZOOM, graphComponent, 1.0)
-    bindAction("button[data-command='FitContent']", centerAtTop)
-  
-    const inputScale = document.getElementById('scale') as HTMLInputElement
-    const inputMargin = document.getElementById('margin') as HTMLInputElement
-    const inputUseRect = document.getElementById('useRect') as HTMLInputElement
-  
-    bindChangeListener('#paperSize', newSize => {
-      inputScale.disabled = newSize !== 'auto'
-    })
-  
-    bindAction("button[data-command='Export']", async () => {
-      const scale = parseFloat(inputScale.value)
-      const margin = parseFloat(inputMargin.value)
-      if (checkInputValues(scale, margin)) {
-        const rectangle = inputUseRect && inputUseRect.checked ? new Rect(exportRect) : null
-  
-        // configure export, export the PDF and show a dialog to save the PDF file
-        clientSidePdfExport.scale = scale
-        clientSidePdfExport.margins = new Insets(margin)
-        clientSidePdfExport.paperSize = getPaperSize()
-        const { raw, uri } = await clientSidePdfExport.exportPdf(graphComponent.graph, rectangle)
-        if (BrowserDetection.ieVersion > 0) {
-          // disable HTML preview in IE and directly download the file
-          FileSaveSupport.save(raw, 'graph.pdf').catch(() => {
-            alert(
-              'Saving directly to the filesystem is not supported by this browser. Please use the server based export instead.'
-            )
-          })
-        } else {
-          showClientExportDialog(raw, uri)
-        }
-      }
-    })
-  
-    bindAction("button[data-command='BatikServerExportButton']", async () => {
-      const scale = parseFloat(inputScale.value)
-      const margin = parseFloat(inputMargin.value)
-      if (checkInputValues(scale, margin)) {
-        const rectangle = inputUseRect && inputUseRect.checked ? new Rect(exportRect) : null
-  
-        // configure export, export the SVG and show a dialog to download the image
-        serverSidePdfExport.scale = scale
-        serverSidePdfExport.margins = new Insets(margin)
-        serverSidePdfExport.paperSize = getPaperSize()
-        const pdf = await serverSidePdfExport.exportSvg(graphComponent.graph, rectangle)
-        requestServerExport(pdf.element, pdf.size, JAVA_SERVLET_URL)
-      }
-    })
-  
-    bindAction("button[data-command='NodeServerServerExportButton']", async () => {
-      const scale = parseFloat(inputScale.value)
-      const margin = parseFloat(inputMargin.value)
-      if (checkInputValues(scale, margin)) {
-        const rectangle = inputUseRect && inputUseRect.checked ? new Rect(exportRect) : null
-  
-        // configure export, export the SVG and show a dialog to download the image
-        serverSidePdfExport.scale = scale
-        serverSidePdfExport.margins = new Insets(margin)
-        serverSidePdfExport.paperSize = getPaperSize()
-        const pdf = await serverSidePdfExport.exportSvg(graphComponent.graph, rectangle)
-        requestServerExport(pdf.element, pdf.size, NODE_SERVER_URL)
-      }
-    })
-  
-    bindAction('#closeButton', hidePopup)
-  }
 
 
 // noinspection JSIgnoredPromiseFromCall
