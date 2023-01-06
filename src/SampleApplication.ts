@@ -108,7 +108,7 @@ import FileSaveSupport  from './utils/FileSaveSupport'
 import PositionHandler from './PositionHandler'
 
 import { fetchLicense } from './demo-app/fetch-license'
-import ServerSidePdfExport from './ServerSidePdfExport'
+//import ServerSidePdfExport from './ServerSidePdfExport'
 import ClientSidePdfExport from './ClientSidePdfExport'
 import { BrowserDetection } from './utils/BrowserDetection'
 //import { ViewBridgeLayout } from 'yfiles/view-layout-bridge'
@@ -127,12 +127,12 @@ export enum PaperSize {
   }
 
 /** Server URLs for server-side export.*/
- const NODE_SERVER_URL = 'http://localhost:8080'
- const JAVA_SERVLET_URL = 'http://localhost:8080/BatikServlet/BatikServlet'
+ //const NODE_SERVER_URL = 'http://localhost:8080'
+ //const JAVA_SERVLET_URL = 'http://localhost:8080/BatikServlet/BatikServlet'
  
 /** Handles the client-sided and server-sided PDF export.*/
 const clientSidePdfExport = new ClientSidePdfExport()
-const serverSidePdfExport = new ServerSidePdfExport()
+//const serverSidePdfExport = new ServerSidePdfExport()
 
 /** The area that will be exported.*/
  let exportRect: MutableRectangle
@@ -155,9 +155,8 @@ async function run(): Promise<void> {
 
 
   // initialize input mode
-
-  //graphComponent.inputMode = new MoveViewportInputMode() // for panning
-  graphComponent.inputMode = new GraphViewerInputMode({clickableItems: GraphItemTypes.NODE})
+  graphComponent.inputMode = new MoveViewportInputMode() // for panning
+  //graphComponent.inputMode = new GraphViewerInputMode({clickableItems: GraphItemTypes.NODE})
 
   //determine the mode for the user (interactions allowed)
   //see here https://docs.yworks.com/yfiles-html/api/GraphEditorInputMode.html
@@ -191,14 +190,11 @@ async function run(): Promise<void> {
     allowAdjustGroupNodeSize: false, //doesn't work - I am still able to resize groups and nodes
     allowClipboardOperations: false
   })
-  //graphComponent.inputMode = geim2
+  graphComponent.inputMode = geim2
   //graphComponent.inputMode = new GraphEditorInputMode()
 
   //initializeInteraction(graphComponent)
-  //retainAspectRatio(graphComponent.graph)
-  initializeInteraction(graphComponent)
   retainAspectRatio(graphComponent.graph)
-
 
   try{
   // set up the HierarchicGrouping
@@ -279,7 +275,8 @@ async function run(): Promise<void> {
     //foldingEdgeStyle: new BridgeEdgeStyle //ArrowEdgeStyle //explore all options for edge styles here: https://docs.yworks.com/yfiles-html/dguide/styles/styles-edge_styles.html
   })
 
-  build_folding(graphComponent.graph, nodesData, groupsData, edgesData)
+  //build_folding(graphComponent.graph, graphData)
+  build_folding_fromSparql(graphComponent.graph, nodesData, groupsData, edgesData)
   centerAtTop()
   
   // Create the builder on the master graph
@@ -362,9 +359,9 @@ async function run(): Promise<void> {
   }
 
   // disable server-side export in IE9 due to limited XHR CORS support
-  if (!ieVersion || ieVersion > 9) {
-    enableServerSideExportButtons()
-  }
+  //if (!ieVersion || ieVersion > 9) {
+  //  enableServerSideExportButtons()
+  //}
 
   // bind the buttons to their commands
   registerCommands(graphComponent)
@@ -375,7 +372,48 @@ async function run(): Promise<void> {
   showApp(graphComponent, overviewComponent)
 }
 
-function build_folding(graph: IGraph, nodesData: any, groupsData: any, edgesData: any): void{
+function build_folding(graph: IGraph, graphData: any): void{
+  const foldingView = graph.foldingView!
+  buildGraph(foldingView.manager.masterGraph, graphData)
+
+  graph.nodes.toArray().forEach(node => {
+    if(node.tag.type.indexOf('collibra:BusinessDataSet') !== -1) {
+      foldingView.collapse(node)
+      node.tag.collapsed = true
+      console.log('set to Collapsed', node.tag.label)
+    }
+    else node.tag.collapsed = false
+  })
+
+  graph.nodes.toArray().forEach(node => {
+    if(node.tag.collapsed) {
+      foldingView.collapse(node)
+      console.log('Collapsed', node.tag.label)
+    }
+  })
+
+  // applying  hierarchic layout with recursive edges
+  const hierarchicLayout = new HierarchicLayout({
+    recursiveGroupLayering: true,
+    //layoutMode: LayoutMode.INCREMENTAL,
+    layoutOrientation: LayoutOrientation.LEFT_TO_RIGHT, //todohere it conflicts with INCREMENTAL
+    automaticEdgeGrouping: true, 
+    backLoopRouting: true 
+  })
+
+  //todo add the following if you want to avoid messing edges and  bends when moving nodes/groups
+  //hierarchicLayout.edgeLayoutDescriptor.routingStyle = new HierarchicLayoutRoutingStyle(
+  //  HierarchicLayoutEdgeRoutingStyle.ORTHOGONAL
+  //)
+
+  hierarchicLayout.edgeLayoutDescriptor.recursiveEdgeStyle = RecursiveEdgeStyle.DIRECTED
+
+  // apply a layout and move it to the top of the graph component
+  graph.applyLayout(hierarchicLayout)
+}
+
+
+function build_folding_fromSparql(graph: IGraph, nodesData: any, groupsData: any, edgesData: any): void{
   const foldingView = graph.foldingView!
   buildGraph_fromSparql(foldingView.manager.masterGraph, nodesData, groupsData, edgesData)
 
@@ -748,68 +786,68 @@ async function loadJSON(url: string): Promise<JSON> {
  * determines the area that will be exported. Users may move and resize the marker with their mouse.
  * @param graphComponent The demo's main graph view.
  */
- function initializeInteraction(graphComponent: GraphComponent): void {
-    const geim = new GraphViewerInputMode()
+ //function initializeInteraction(graphComponent: GraphComponent): void {
+    //const geim = new GraphEditorInputMode()
   
     // create the model for the export rectangle, ...
-    exportRect = new MutableRectangle(graphComponent.viewPoint.x, graphComponent.viewPoint.y, 100, 100) //the initial size ( canvas horizontal position, canvas vertical position, width, height)
-    console.log('viewpoint', graphComponent.viewPoint)
+    //exportRect = new MutableRectangle(graphComponent.viewPoint.x, graphComponent.viewPoint.y, 100, 100) //the initial size ( canvas horizontal position, canvas vertical position, width, height)
+    //console.log('viewpoint', graphComponent.viewPoint)
     // ... visualize it in the canvas, ...
-    const installer = new RectangleIndicatorInstaller(exportRect)
-    installer.addCanvasObject(
-      graphComponent.createRenderContext(),
-      graphComponent.backgroundGroup,
-      exportRect
-    )
+    //const installer = new RectangleIndicatorInstaller(exportRect)
+    //installer.addCanvasObject(
+      //graphComponent.createRenderContext(),
+      //graphComponent.backgroundGroup,
+      //exportRect
+    //)
     // ... and make it movable and resizable
-    addExportRectInputModes(geim)
+    //addExportRectInputModes(geim)
   
     // assign the configured input mode to the GraphComponent
-    graphComponent.inputMode = geim
-  }
+    //graphComponent.inputMode = geim
+  //}
   
   /**
  * Adds the view modes that handle moving and resizing of the export rectangle.
  * @param inputMode The demo's main input mode.
  */
-function addExportRectInputModes(inputMode: GraphInputMode): void {
+//function addExportRectInputModes(inputMode: GraphInputMode): void {
     // create a mode that deals with resizing the export rectangle and ...
-    const exportHandleInputMode = new HandleInputMode({
+    //const exportHandleInputMode = new HandleInputMode({
       // ensure that this mode takes precedence over most other modes
       // i.e. resizing the export rectangle takes precedence over other interactive editing
-      priority: 1
-    })
+      //priority: 1
+    //})
     // ... add it to the demo's main input mode
-    inputMode.add(exportHandleInputMode)
+    //inputMode.add(exportHandleInputMode)
   
     // create handles for resizing the export rectangle and ...
-    const newDefaultCollectionModel = new ObservableCollection<IHandle>()
-    newDefaultCollectionModel.add(new RectangleHandle(HandlePositions.NORTH_EAST, exportRect))
-    newDefaultCollectionModel.add(new RectangleHandle(HandlePositions.NORTH_WEST, exportRect))
-    newDefaultCollectionModel.add(new RectangleHandle(HandlePositions.SOUTH_EAST, exportRect))
-    newDefaultCollectionModel.add(new RectangleHandle(HandlePositions.SOUTH_WEST, exportRect))
+    //const newDefaultCollectionModel = new ObservableCollection<IHandle>()
+    //newDefaultCollectionModel.add(new RectangleHandle(HandlePositions.NORTH_EAST, exportRect))
+    //newDefaultCollectionModel.add(new RectangleHandle(HandlePositions.NORTH_WEST, exportRect))
+    //newDefaultCollectionModel.add(new RectangleHandle(HandlePositions.SOUTH_EAST, exportRect))
+    //newDefaultCollectionModel.add(new RectangleHandle(HandlePositions.SOUTH_WEST, exportRect))
     // ... add the handles to the input mode that is responsible for resizing the export rectangle
-    exportHandleInputMode.handles = newDefaultCollectionModel
+    //exportHandleInputMode.handles = newDefaultCollectionModel
   
     // create a mode that deals with moving the export rectangle and ...
-    const moveInputMode = new MoveInputMode({
+    //const moveInputMode = new MoveInputMode({
       // create a custom position handler that moves the export rectangle on mouse events
-      positionHandler: new PositionHandler(exportRect),
+      //positionHandler: new PositionHandler(exportRect),
       // create a hit testable that determines if a mouse event occurs 'on' the export rectangle
       // and thus should be handled by this mode
-      hitTestable: IHitTestable.create((context, location) => {
-        const path = new GeneralPath(5)
-        path.appendRectangle(exportRect, false)
-        return path.pathContains(location, context.hitTestRadius + 3 / context.zoom)
-      }),
+      //hitTestable: IHitTestable.create((context, location) => {
+        //const path = new GeneralPath(5)
+        //path.appendRectangle(exportRect, false)
+        //return path.pathContains(location, context.hitTestRadius + 3 / context.zoom)
+      //}),
       // ensure that this mode takes precedence over the move input mode used for regular graph
       // elements
-      priority: 41
-    })
+      //priority: 41
+    //})
   
     // ... add it to the demo's main input mode
-    inputMode.add(moveInputMode)
-  }
+    //inputMode.add(moveInputMode)
+  //}
   
   /**
    * Configures node resize behavior to force resize operations to keep the aspect ratio of the
@@ -837,17 +875,17 @@ function addExportRectInputModes(inputMode: GraphInputMode): void {
    * @param scale The desired scale factor for the image export.
    * @param margin The desired margins for the image export.
    */
-  function checkInputValues(scale: number, margin: number): boolean {
-    if (isNaN(scale) || scale <= 0) {
-      alert('Scale must be a positive number.')
-      return false
-    }
-    if (isNaN(margin) || margin < 0) {
-      alert('Margin must be a non-negative number.')
-      return false
-    }
-    return true
-  }
+  //function checkInputValues(scale: number, margin: number): boolean {
+  //  if (isNaN(scale) || scale <= 0) {
+  //    alert('Scale must be a positive number.')
+  //    return false
+  //  }
+  //  if (isNaN(margin) || margin < 0) {
+  //    alert('Margin must be a non-negative number.')
+  //    return false
+  //  }
+  //  return true
+  //}
   
   /**
    * Requests a server-side export.
@@ -855,11 +893,17 @@ function addExportRectInputModes(inputMode: GraphInputMode): void {
    * @param size The size of the exported image.
    * @param url The URL of the service that will convert the given SVG document to a PDF.
    */
-  function requestServerExport(svgElement: Element, size: Size, url: string): any {
-    const svgString = SvgExport.exportSvgString(svgElement)
-    serverSidePdfExport.requestFile(url, 'pdf', svgString, size)
-    hidePopup()
-  }
+  //function requestServerExport(svgElement: Element, size: Size, url: string): any {
+  //  const svgString = SvgExport.exportSvgString(svgElement)
+  //  serverSidePdfExport.requestFile(url, 'pdf', svgString, size)
+  //  hidePopup()
+  //}
+
+
+ 
+ 
+ //extend: 'pdf',
+  //              messageBottom: datetime;
   
   /**
    * Shows the export dialog for the client-side graph exports.
@@ -867,19 +911,32 @@ function addExportRectInputModes(inputMode: GraphInputMode): void {
    * @param pdfUrl A data URI representation of the generated PDF that can be previewed.
    */
   function showClientExportDialog(raw: string, pdfUrl: string): void {
+    
+    var currentdate = new Date();
+    var datetime = currentdate.getDate() + "/"
+                + (currentdate.getMonth()+1)  + "/"
+                + currentdate.getFullYear() + " @ " 
+                + currentdate.getHours() + ":" 
+                + currentdate.getMinutes() + ":"
+                + currentdate.getSeconds();
+
+    
+    const filenamePdf = 'graph' + '-' + datetime + '.pdf'
+    console.log(Date.now(), datetime, filenamePdf)
     const pdfIframe = document.createElement('iframe')
     pdfIframe.setAttribute('style', 'width: 99%; height: 99%')
     pdfIframe.src = pdfUrl
     const pdfContainerInner = document.getElementById('pdfContainerInner') as HTMLDivElement
-    pdfContainerInner.innerHTML = ''
+    pdfContainerInner.innerHTML = '' //under the title on the pop-up
     pdfContainerInner.appendChild(pdfIframe)
+
   
     const saveButton = document.getElementById('clientPdfSaveButton') as HTMLButtonElement
     const pdfButton = cloneAndReplace(saveButton)
     pdfButton.addEventListener(
       'click',
       () => {
-        FileSaveSupport.save(raw, 'graph.pdf').catch(() => {
+        FileSaveSupport.save(raw, filenamePdf).catch(() => {
           alert(
             'Saving directly to the filesystem is not supported by this browser. Please use the server based export instead.'
           )
@@ -903,15 +960,15 @@ function addExportRectInputModes(inputMode: GraphInputMode): void {
   /**
    * Enables server-side export buttons.
    */
-  async function enableServerSideExportButtons(): Promise<void> {
+  //async function enableServerSideExportButtons(): Promise<void> {
     // if a server is available, enable the server export button
-    const isAliveJava = await isServerAlive(JAVA_SERVLET_URL)
-    ;(document.getElementById('BatikServerExportButton') as HTMLButtonElement).disabled = !isAliveJava
+    //const isAliveJava = await isServerAlive(JAVA_SERVLET_URL)
+    //;(document.getElementById('BatikServerExportButton') as HTMLButtonElement).disabled = !isAliveJava
   
-    const isAliveNode = await isServerAlive(NODE_SERVER_URL)
-    ;(document.getElementById('NodeServerServerExportButton') as HTMLButtonElement).disabled =
-      !isAliveNode
-  }
+    //const isAliveNode = await isServerAlive(NODE_SERVER_URL)
+    //;(document.getElementById('NodeServerServerExportButton') as HTMLButtonElement).disabled =
+    //  !isAliveNode
+  //}
   
   /**
    * Checks if the server at the given URL is alive.
@@ -958,8 +1015,9 @@ function addExportRectInputModes(inputMode: GraphInputMode): void {
    * Returns the chosen export paper size.
    */
   function getPaperSize(): PaperSize {
-    const inputPaperSize = document.getElementById('paperSize') as HTMLSelectElement
-    return PaperSize[inputPaperSize.value as keyof typeof PaperSize]
+  //  const inputPaperSize = document.getElementById('paperSize') as HTMLSelectElement
+  //  return PaperSize[inputPaperSize.value as keyof typeof PaperSize]
+    return PaperSize.A4 //AUTO
   }
   
   /**
@@ -974,67 +1032,72 @@ function addExportRectInputModes(inputMode: GraphInputMode): void {
     bindCommand("button[data-command='ZoomOriginal']", ICommand.ZOOM, graphComponent, 1.0)
     bindAction("button[data-command='FitContent']", centerAtTop)
   
-    const inputScale = document.getElementById('scale') as HTMLInputElement
-    const inputMargin = document.getElementById('margin') as HTMLInputElement
-    const inputUseRect = document.getElementById('useRect') as HTMLInputElement
+    //const inputScale = document.getElementById('scale') as HTMLInputElement
+    //const inputMargin = document.getElementById('margin') as HTMLInputElement
+    //const inputUseRect = document.getElementById('useRect') as HTMLInputElement
   
-    bindChangeListener('#paperSize', newSize => {
-      inputScale.disabled = newSize !== 'auto'
-    })
+    //bindChangeListener('#paperSize', newSize => {
+    //  inputScale.disabled = newSize !== 'auto'
+    //})
   
     bindAction("button[data-command='Export']", async () => {
-      const scale = parseFloat(inputScale.value)
-      const margin = parseFloat(inputMargin.value)
-      if (checkInputValues(scale, margin)) {
-        const rectangle = inputUseRect && inputUseRect.checked ? new Rect(exportRect) : null
-  
+      //const scale = parseFloat(inputScale.value)
+      //const margin = parseFloat(inputMargin.value)
+      const scale = 1.0
+      const margin = 100.0
+      const rectangle = null
+      const filenamePdf = 'graph' + '-' + Date.now() + '.pdf'
+      //const psize = 'Auto'
+      //if (checkInputValues(scale, margin)) {
+        //const rectangle = inputUseRect && inputUseRect.checked ? new Rect(exportRect) : null
         // configure export, export the PDF and show a dialog to save the PDF file
         clientSidePdfExport.scale = scale
         clientSidePdfExport.margins = new Insets(margin)
         clientSidePdfExport.paperSize = getPaperSize()
-        const { raw, uri } = await clientSidePdfExport.exportPdf(graphComponent.graph, rectangle)
+        //clientSidePdfExport.paperSize = psize
+        const { raw, uri } = await clientSidePdfExport.exportPdf(graphComponent.graph, rectangle, 'thedatetodaygoeshere')
         if (BrowserDetection.ieVersion > 0) {
           // disable HTML preview in IE and directly download the file
-          FileSaveSupport.save(raw, 'graph.pdf').catch(() => {
+          FileSaveSupport.save(raw, filenamePdf).catch(() => {
             alert(
-              'Saving directly to the filesystem is not supported by this browser. Please use the server based export instead.'
+              'Saving directly to the filesystem is not supported by this browser.'
             )
           })
         } else {
           showClientExportDialog(raw, uri)
         }
-      }
+      //}
     })
   
-    bindAction("button[data-command='BatikServerExportButton']", async () => {
-      const scale = parseFloat(inputScale.value)
-      const margin = parseFloat(inputMargin.value)
-      if (checkInputValues(scale, margin)) {
-        const rectangle = inputUseRect && inputUseRect.checked ? new Rect(exportRect) : null
+    //bindAction("button[data-command='BatikServerExportButton']", async () => {
+      //const scale = parseFloat(inputScale.value)
+      //const margin = parseFloat(inputMargin.value)
+      //if (checkInputValues(scale, margin)) {
+        //onst rectangle = inputUseRect && inputUseRect.checked ? new Rect(exportRect) : null
   
         // configure export, export the SVG and show a dialog to download the image
-        serverSidePdfExport.scale = scale
-        serverSidePdfExport.margins = new Insets(margin)
-        serverSidePdfExport.paperSize = getPaperSize()
-        const pdf = await serverSidePdfExport.exportSvg(graphComponent.graph, rectangle)
-        requestServerExport(pdf.element, pdf.size, JAVA_SERVLET_URL)
-      }
-    })
+        //serverSidePdfExport.scale = scale
+        //serverSidePdfExport.margins = new Insets(margin)
+        //serverSidePdfExport.paperSize = getPaperSize()
+        //const pdf = await serverSidePdfExport.exportSvg(graphComponent.graph, rectangle)
+        //requestServerExport(pdf.element, pdf.size, JAVA_SERVLET_URL)
+      //}
+    //})
   
-    bindAction("button[data-command='NodeServerServerExportButton']", async () => {
-      const scale = parseFloat(inputScale.value)
-      const margin = parseFloat(inputMargin.value)
-      if (checkInputValues(scale, margin)) {
-        const rectangle = inputUseRect && inputUseRect.checked ? new Rect(exportRect) : null
+    //bindAction("button[data-command='NodeServerServerExportButton']", async () => {
+      //const scale = parseFloat(inputScale.value)
+      //const margin = parseFloat(inputMargin.value)
+      //if (checkInputValues(scale, margin)) {
+        //const rectangle = inputUseRect && inputUseRect.checked ? new Rect(exportRect) : null
   
         // configure export, export the SVG and show a dialog to download the image
-        serverSidePdfExport.scale = scale
-        serverSidePdfExport.margins = new Insets(margin)
-        serverSidePdfExport.paperSize = getPaperSize()
-        const pdf = await serverSidePdfExport.exportSvg(graphComponent.graph, rectangle)
-        requestServerExport(pdf.element, pdf.size, NODE_SERVER_URL)
-      }
-    })
+        //serverSidePdfExport.scale = scale
+        //serverSidePdfExport.margins = new Insets(margin)
+        //serverSidePdfExport.paperSize = getPaperSize()
+        //const pdf = await serverSidePdfExport.exportSvg(graphComponent.graph, rectangle)
+        //requestServerExport(pdf.element, pdf.size, NODE_SERVER_URL)
+      //}
+    //})
   
     bindAction('#closeButton', hidePopup)
   }

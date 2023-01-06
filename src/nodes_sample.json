@@ -1,0 +1,36 @@
+{
+    "@graph": [{
+        "@id": "http://www.hsbc.com/row/0492b7f965b1732612c10deb110fb24205d65e45bd87a0a3bb1cd0c54b65b290",
+        "dataElementDescription": "Defines if the trade or reporting has to be done in local currency ",
+        "group": "http://www.hsbc.com/row/c3153e8cfbe9953100ede3f0a6b147b7484b90075fc4c3f4b4486d82562870cd",
+        "label": "Local Currency Position flag",
+        "type": "collibra:BusinessDataElement"
+    }, {
+        "@id": "http://www.hsbc.com/row/127ea7011bd3dda16f124482c63ded6b11c79b7fa8f64ceaa0f975f0d5e80d8a",
+        "dataElementDescription": "A date on which the principal amount of a note, draft, acceptance bond or other debt instrument becomes due and is repaid to the investor and interest payments stop.",
+        "group": "http://www.hsbc.com/row/c3153e8cfbe9953100ede3f0a6b147b7484b90075fc4c3f4b4486d82562870cd",
+        "label": "Maturity Date",
+        "type": "collibra:BusinessDataElement"
+    }],
+    "@context": {
+        "dataElementDescription": {
+            "@id": "http://www.hsbc.com/vis/dataElementDescription"
+        },
+        "type": {
+            "@id": "http://www.hsbc.com/vis/type",
+            "@type": "@id"
+        },
+        "label": {
+            "@id": "http://www.hsbc.com/vis/label"
+        },
+        "group": {
+            "@id": "http://www.hsbc.com/vis/group",
+            "@type": "@id"
+        },
+        "casewise": "http://www.hsbc.com/casewise/",
+        "vis": "http://www.hsbc.com/vis/",
+        "collibra": "http://www.hsbc.com/collibra/",
+        "owl": "http://wwww.w3.org/2002/07/owl#",
+        "eim": "http://www.hsbc.com/eim/"
+    }
+}

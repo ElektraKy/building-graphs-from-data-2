@@ -1,0 +1,51 @@
+{
+    "nodesSource": [
+        { "id": "partyId", "group": "parties", "label": "Party ID", "type": "collibra:BusinessDataElement" },
+        { "id": "partyName", "group": "parties", "label": "Party Name", "type": "collibra:BusinessDataElement" },
+        { "id": "partyNameTrans", "group": "transMonitoring", "label": "Party Name", "type": "collibra:ReportDataElement" },
+        { "id": "partyNameSanc", "group": "sanctionsScr", "label": "Party Name", "type": "collibra:ReportDataElement" },
+        { "id": "partyNameCrm", "group": "crm", "label": "Party Name", "type": "collibra:ReportDataElement" },
+        { "id": "partyCI", "group": "parties", "label": "Party Country of Incorporation", "type": "collibra:BusinessDataElement" },
+        { "id": "partyCI", "group": "parties", "label": "Party Country of Incorporation", "type": "collibra:BusinessDataElement" },
+        { "id": "partyCD", "group": "parties", "label": "Party Country of Domicile", "type": "collibra:BusinessDataElement" },
+        { "id": "partyAddress", "group": "parties", "label": "Party Address", "type": "collibra:BusinessDataElement" },
+        { "id": "partyPC", "group": "parties", "label": "Party Postal Code", "type": "collibra:BusinessDataElement" },
+        { "id": "partyInd", "group": "parties", "label": "Party Industry", "type": "collibra:BusinessDataElement" },
+        { "id": "partyType", "group": "parties", "label": "Party Type", "type": "collibra:BusinessDataElement" },
+        { "id": "partyRisk", "group": "parties", "label": "Party Risk", "type": "collibra:BusinessDataElement" },
+        { "id": "partyEI", "group": "parties", "label": "Party External Identifier", "type": "collibra:BusinessDataElement" },
+        { "id": "partyEIT", "group": "parties", "label": "Party External Identifier Type", "type": "collibra:BusinessDataElement" },
+        { "id": "partyLRStatus", "group": "parties", "label": "Party Listed / Regulated Status", "type": "collibra:BusinessDataElement" },
+        { "id": "partyDOB", "group": "parties", "label": "Party Date of Birth / Organisation", "type": "collibra:BusinessDataElement" },
+        { "id": "partyStatus", "group": "parties", "label": "Party Status (Pending/Active/Inactive)", "type": "collibra:BusinessDataElement" },
+        { "id": "partyPhone", "group": "parties", "label": "Party Phone Number", "type": "collibra:BusinessDataElement" },
+        { "id": "partyWebsite", "group": "parties", "label": "Party Website", "type": "collibra:BusinessDataElement" },
+        { "id": "partyEmail", "group": "parties", "label": "Party Email Address", "type": "collibra:BusinessDataElement" },
+        { "id": "partyID", "group": "parties", "label": "Party ID", "type": "collibra:BusinessDataElement" },
+        { "id": "partyIDType", "group": "parties", "label": "Party ID Type", "type": "collibra:BusinessDataElement" },
+        { "id": "partyDateCreated", "group": "parties", "label": "Date Created", "type": "collibra:BusinessDataElement" },
+        { "id": "partyLastUpdated", "group": "parties", "label": "Date Last Updated", "type": "collibra:BusinessDataElement" },
+        { "id": "partyNextReviewDate", "group": "parties", "label": "Next Review Date", "type": "collibra:BusinessDataElement" },
+        { "id": "relBusDiv", "group": "relationship", "label": "Business Division", "type": "collibra:BusinessDataElement" },
+        { "id": "relProdType", "group": "relationship", "label": "Product Type", "type": "collibra:BusinessDataElement" },
+        { "id": "relProdID", "group": "relationship", "label": "Product ID", "type": "collibra:BusinessDataElement" },
+        { "id": "relProdDiv", "group": "relationship", "label": "Product Division/Business Line", "type": "collibra:BusinessDataElement" },
+        { "id": "relRelOwner", "group": "relationship", "label": "Relationship Owner(s)", "type": "collibra:BusinessDataElement" },
+        { "id": "relDateCreated", "group": "relationship", "label": "Date Created", "type": "collibra:BusinessDataElement" },
+        { "id": "relDateLastUpd", "group": "relationship", "label": "Date Last Updated", "type": "collibra:BusinessDataElement" }
+    ],
+    "edgesSource": [
+        { "from": "partyName", "to": "partyNameTrans" },
+        { "from": "partyName", "to": "partyNameSanc" },
+        { "from": "partyName", "to": "partyNameCrm" }
+    ],
+
+    "groupsSource": [
+        { "id": "onboarding", "label": "Onboarding", "type": "eim:App_Instance" },
+        { "id": "transMonitoring", "label": "Transaction Monitoring", "type": "eim:App_Instance" },
+        { "id": "sanctionsScr", "label": "Sanctions Screening", "type": "eim:App_Instance" },
+        { "id": "crm", "label": "CRM", "type": "eim:App_Instance" },
+        { "id": "parties", "group": "onboarding", "label": "Parties / Entities", "type": "collibra:BusinessDataSet" },
+        { "id": "relationship", "group": "onboarding", "label": "Relationship", "type": "collibra:BusinessDataSet" }
+    ]
+}

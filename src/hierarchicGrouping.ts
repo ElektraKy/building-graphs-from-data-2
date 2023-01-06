@@ -237,7 +237,7 @@ import {
       //layout.orthogonalRouting =  true //choose edge type of original layout (before the user moves nodes)
       layout.backLoopRouting = true
       layout.recursiveGroupLayering = true
-      //layout.layoutMode = LayoutMode.INCREMENTAL //this makes the edges funny
+      layout.layoutMode = LayoutMode.INCREMENTAL //this makes the edges funny
 
       //todo add the following if you want to avoid messing edges and  bends when moving nodes/groups
       //layout.edgeLayoutDescriptor.routingStyle = new HierarchicLayoutRoutingStyle(HierarchicLayoutEdgeRoutingStyle.ORTHOGONAL)

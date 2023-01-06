@@ -33,7 +33,7 @@ export default class ClientSidePdfExport {
   /**
    * Exports the {@link IGraph} to PDF with the help of {@link SvgExport} and jsPDF.
    */
-  async exportPdf(graph: IGraph, exportRect: Rect | null): Promise<{ raw: string; uri: string }> {
+  async exportPdf(graph: IGraph, exportRect: Rect | null, dateTimeHeader: String): Promise<{ raw: string; uri: string }> {
     // Create a new graph component for exporting the original SVG content
     const exportComponent = new GraphComponent()
     // ... and assign it the same graph.
@@ -60,7 +60,7 @@ export default class ClientSidePdfExport {
     const svgElement = await exporter.exportSvgAsync(exportComponent)
 
     const size = getExportSize(this.paperSize, exporter)
-    return convertSvgToPdf(svgElement as SVGElement, size)
+    return convertSvgToPdf(svgElement as SVGElement, size, dateTimeHeader)
   }
 }
 
@@ -70,7 +70,8 @@ export default class ClientSidePdfExport {
  */
 function convertSvgToPdf(
   svgElement: SVGElement,
-  size: Size
+  size: Size,
+  pdfHeader: String
 ): Promise<{ raw: string; uri: string }> {
   svgElement = svgElement.cloneNode(true) as SVGElement
 
@@ -83,6 +84,8 @@ function convertSvgToPdf(
     compress: true,
     floatPrecision: 'smart'
   })
+
+  jsPdf.text(23,23, 'Data Exported on: ' + pdfHeader)
 
   const options = {
     width: sizeArray[0],

@@ -1,0 +1,16 @@
+{
+    "head": {
+        "vars": ["from", "to"]
+    },
+    "results": {
+        "bindings": [{
+                "from": { "type": "uri", "value": "http://www.hsbc.com/row/468c74f4498851fbdc2349c8c15faee4f1d804df0175bdbd89d7891eb9d1e465" },
+                "to": { "type": "uri", "value": "http://www.hsbc.com/row/7ad14091d56940cf38e01c3ab6f4f05b8add7cfa86c23fd4eda67735d0b832c3" }
+            },
+            {
+                "from": { "type": "uri", "value": "http://www.hsbc.com/row/0492b7f965b1732612c10deb110fb24205d65e45bd87a0a3bb1cd0c54b65b290" },
+                "to": { "type": "uri", "value": "http://www.hsbc.com/row/86bfc9392b1ce610c161633162f51d6981c9dc3094d048729df448ab290e2e01" }
+            }
+        ]
+    }
+}

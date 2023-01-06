@@ -1,0 +1,72 @@
+{
+    "@graph": [{
+        "@id": "casewise:businessProcess/06bf51972eb111ed84940022483fd6a5",
+        "businessProcessDescription": "This Process consumes the Metrics via GRP & Emails etc,  calculated by Traded risk Systems (i.e VaR, IRC, DPRM etc),Product control & Finance and produce the RMM report for HNAH entity.",
+        "businessProcessOwner": "Daniel W Bernstein",
+        "label": "Produce & Distribute HNAH Risk Management Meeting (RMM) Report",
+        "scope": "BCBS239",
+        "type": "casewise:BusinessProcess"
+    }, {
+        "@id": "eim:App_Inst/10269148",
+        "AppBusinessOwner": "Marvin AMPARO SANTANA",
+        "AppDescription": "Consolidates exposures to be reviewed at governance meetings.",
+        "group": "casewise:businessProcess/06bf51972eb111ed84940022483fd6a5",
+        "label": "Traded Risk Template",
+        "type": "eim:App_Instance"
+    }, {
+        "@id": "http://www.hsbc.com/row/468c74f4498851fbdc2349c8c15faee4f1d804df0175bdbd89d7891eb9d1e465",
+        "databaseDescription": "IRC Dataset defines the capitalise risks due to jump to default and credit migration.",
+        "group": "eim:App_Inst/242768",
+        "label": "Global Incremental Risk Charge DataSet",
+        "type": "collibra:BusinessDataSet"
+    }, {
+        "@id": "http://www.hsbc.com/row/9b9f1c5fb9d809cfd494594aaf78660cae5831747cb36312c3c3a2c4a7a2e61a",
+        "group": "casewise:businessProcess/06bf51972eb111ed84940022483fd6a5",
+        "label": "HNAH Risk Management Meeting (RMM)",
+        "reportDescription": "HNAH RMM purpose is to monitor the risk management requirements of HNAH entity covering areas such as market, credit, operational, financial and legal risks, including performance, capital, balance sheet and funding requirements.",
+        "reportOwner": "Daniel W Bernstein",
+        "type": "collibra:Report"
+    }],
+    "@context": {
+        "AppDescription": {
+            "@id": "http://www.hsbc.com/vis/AppDescription"
+        },
+        "AppBusinessOwner": {
+            "@id": "http://www.hsbc.com/vis/AppBusinessOwner"
+        },
+        "type": {
+            "@id": "http://www.hsbc.com/vis/type",
+            "@type": "@id"
+        },
+        "group": {
+            "@id": "http://www.hsbc.com/vis/group",
+            "@type": "@id"
+        },
+        "label": {
+            "@id": "http://www.hsbc.com/vis/label"
+        },
+        "businessProcessDescription": {
+            "@id": "http://www.hsbc.com/vis/businessProcessDescription"
+        },
+        "businessProcessOwner": {
+            "@id": "http://www.hsbc.com/vis/businessProcessOwner"
+        },
+        "scope": {
+            "@id": "http://www.hsbc.com/vis/scope"
+        },
+        "databaseDescription": {
+            "@id": "http://www.hsbc.com/vis/databaseDescription"
+        },
+        "reportDescription": {
+            "@id": "http://www.hsbc.com/vis/reportDescription"
+        },
+        "reportOwner": {
+            "@id": "http://www.hsbc.com/vis/reportOwner"
+        },
+        "casewise": "http://www.hsbc.com/casewise/",
+        "vis": "http://www.hsbc.com/vis/",
+        "collibra": "http://www.hsbc.com/collibra/",
+        "owl": "http://wwww.w3.org/2002/07/owl#",
+        "eim": "http://www.hsbc.com/eim/"
+    }
+}
